@@ -40,8 +40,10 @@ public class ActsFragment extends Fragment {
 
         // Aquí se configuraría el RecyclerView con un LayoutManager y un Adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // Suponiendo que tienes un adaptador llamado MyAdapter
-        // recyclerView.setAdapter(new MyAdapter());
+        // Datos de ejemplo, reemplar con los propios datos de la API
+        String[] myData = {"Dato 1", "Dato 2", "Dato 3"};
+        MyAdapter adapter = new MyAdapter(myData);
+        recyclerView.setAdapter(adapter);
 
         // Configurar los oyentes de los botones
         buttonAll.setOnClickListener(view -> {
