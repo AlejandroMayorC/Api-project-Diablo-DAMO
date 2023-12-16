@@ -2,21 +2,17 @@
     <item
         android:id="@+id/navigation_chronology"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Chronology" />
+        android:title="API 1" />
     <item
         android:id="@+id/navigation_acts"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Acts" />
+        android:title="API 2" />
     <item
         android:id="@+id/navigation_craft"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Craft" />
-    <item
-        android:id="@+id/navigation_character"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Character" />
+        android:title="API 3" />
     <item
         android:id="@+id/navigation_item"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Item" />
+        android:title="Favoritos" />
 </menu>

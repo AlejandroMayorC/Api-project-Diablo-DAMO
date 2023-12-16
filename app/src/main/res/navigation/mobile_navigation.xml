@@ -8,31 +8,25 @@
     <fragment
         android:id="@+id/navigation_chronology"
         android:name="com.example.apiprojectdiablodamo.ui.ChronologyFragment"
-        android:label="Chronology"
+        android:label="API 1"
         tools:layout="@layout/fragment_chronology" />
 
     <fragment
         android:id="@+id/navigation_acts"
         android:name="com.example.apiprojectdiablodamo.ui.ActsFragment"
-        android:label="Acts"
+        android:label="API 2"
         tools:layout="@layout/fragment_acts" />
 
     <fragment
         android:id="@+id/navigation_craft"
         android:name="com.example.apiprojectdiablodamo.ui.CraftFragment"
-        android:label="Craft"
+        android:label="API 3"
         tools:layout="@layout/fragment_craft" />
-
-    <fragment
-        android:id="@+id/navigation_character"
-        android:name="com.example.apiprojectdiablodamo.ui.CharacterFragment"
-        android:label="Character"
-        tools:layout="@layout/fragment_character" />
 
     <fragment
         android:id="@+id/navigation_item"
         android:name="com.example.apiprojectdiablodamo.ui.ItemFragment"
-        android:label="Item"
+        android:label="Favoritos"
         tools:layout="@layout/fragment_item" />
 
 </navigation>
