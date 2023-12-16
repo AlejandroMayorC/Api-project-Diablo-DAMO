@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_chronology"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="Chronology" />
+    <item
+        android:id="@+id/navigation_acts"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="Acts" />
+    <item
+        android:id="@+id/navigation_craft"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="Craft" />
+    <item
+        android:id="@+id/navigation_followers"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="Followers" />
+    <item
+        android:id="@+id/navigation_character"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="Character" />
+    <item
+        android:id="@+id/navigation_item"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="Item" />
+</menu>

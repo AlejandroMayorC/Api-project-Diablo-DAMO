@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_chronology">
+
+    <fragment
+        android:id="@+id/navigation_chronology"
+        android:name="com.example.apiprojectdiablodamo.ui.ChronologyFragment"
+        android:label="Chronology"
+        tools:layout="@layout/fragment_chronology" />
+
+    <fragment
+        android:id="@+id/navigation_acts"
+        android:name="com.example.apiprojectdiablodamo.ui.ActsFragment"
+        android:label="Acts"
+        tools:layout="@layout/fragment_acts" />
+
+    <fragment
+        android:id="@+id/navigation_craft"
+        android:name="com.example.apiprojectdiablodamo.ui.CraftFragment"
+        android:label="Craft"
+        tools:layout="@layout/fragment_craft" />
+
+    <fragment
+        android:id="@+id/navigation_followers"
+        android:name="com.example.apiprojectdiablodamo.ui.FollowersFragment"
+        android:label="Followers"
+        tools:layout="@layout/fragment_followers" />
+
+    <fragment
+        android:id="@+id/navigation_character"
+        android:name="com.example.apiprojectdiablodamo.ui.CharacterFragment"
+        android:label="Character"
+        tools:layout="@layout/fragment_character" />
+
+    <fragment
+        android:id="@+id/navigation_item"
+        android:name="com.example.apiprojectdiablodamo.ui.ItemFragment"
+        android:label="Item"
+        tools:layout="@layout/fragment_item" />
+
+</navigation>
