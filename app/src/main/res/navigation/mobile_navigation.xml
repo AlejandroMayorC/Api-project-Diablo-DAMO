@@ -24,12 +24,6 @@
         tools:layout="@layout/fragment_craft" />
 
     <fragment
-        android:id="@+id/navigation_followers"
-        android:name="com.example.apiprojectdiablodamo.ui.FollowersFragment"
-        android:label="Followers"
-        tools:layout="@layout/fragment_followers" />
-
-    <fragment
         android:id="@+id/navigation_character"
         android:name="com.example.apiprojectdiablodamo.ui.CharacterFragment"
         android:label="Character"
