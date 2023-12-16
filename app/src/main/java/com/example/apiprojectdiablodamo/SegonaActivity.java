@@ -32,8 +32,7 @@ public class SegonaActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_chronology, R.id.navigation_acts, R.id.navigation_craft,
-                 R.id.navigation_character, R.id.navigation_item)
+                R.id.navigation_chronology, R.id.navigation_acts, R.id.navigation_craft, R.id.navigation_item)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_segona);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
