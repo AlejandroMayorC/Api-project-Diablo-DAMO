@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "382105919657",
+    "project_id": "diginnova-5ac64",
+    "storage_bucket": "diginnova-5ac64.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382105919657:android:e4a8f9e24e462c73f189b8",
+        "android_client_info": {
+          "package_name": "com.example.apiprojectdiablodamo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtkIfpIk0e9Ds_6SOz9jjgjJWGyVSVNTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
