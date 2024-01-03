@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.apiprojectdiablodamo.API.ApiActivity;
+
 public class PortadaActivity extends AppCompatActivity {
 
     private ImageView logoImage;
@@ -23,7 +25,7 @@ public class PortadaActivity extends AppCompatActivity {
         IniciActivitat_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PortadaActivity.this, SegonaActivity.class);
+                Intent intent = new Intent(PortadaActivity.this, ApiActivity.class);
                 startActivity(intent);
             }
         });

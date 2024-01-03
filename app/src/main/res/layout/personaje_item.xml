@@ -9,7 +9,7 @@
         android:id="@+id/imageViewIcono"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/baseline_arrow_back_24" /> <!-- Ejemplo de ícono -->
+        android:src="@drawable/ic_home_black_24dp" /> <!-- Ejemplo de ícono -->
 
     <TextView
         android:id="@+id/textViewNombre"
