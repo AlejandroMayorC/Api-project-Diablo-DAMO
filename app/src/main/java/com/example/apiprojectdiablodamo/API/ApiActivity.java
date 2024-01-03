@@ -24,7 +24,7 @@ public class ApiActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_segona);
+        setContentView(R.layout.fragment_character);
 
         recyclerView = findViewById(R.id.recyclerViewPersonajes);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
