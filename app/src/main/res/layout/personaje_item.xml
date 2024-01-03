@@ -7,15 +7,17 @@
 
     <ImageView
         android:id="@+id/imageViewIcono"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_home_black_24dp" /> <!-- Ejemplo de ícono -->
+        android:layout_width="89dp"
+        android:layout_height="72dp"
+        android:src="@drawable/ic_home_black_24dp" />
 
     <TextView
         android:id="@+id/textViewNombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
         android:layout_marginStart="16dp"
-        android:text="Nombre del Personaje" /> <!-- Texto de ejemplo -->
+        android:text="Nombre del Personaje"
+        android:textSize="24dp" />
 
 </LinearLayout>

@@ -1,8 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_chronology"
+        android:id="@+id/navigation_classes"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="API 1" />
+        android:title="Classes" />
     <item
         android:id="@+id/navigation_acts"
         android:icon="@drawable/ic_dashboard_black_24dp"

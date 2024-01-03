@@ -56,7 +56,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
             if (!imageUrl.isEmpty()) {
                 Glide.with(holder.imageViewIcono.getContext())
                         .load(imageUrl)
-                        .override(100, 100)
+                        .override(200, 200)
                         .centerCrop()
                         .into(holder.imageViewIcono);
             }
