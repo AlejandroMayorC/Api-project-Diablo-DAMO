@@ -3,28 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_chronology">
+    app:startDestination="@id/navigation_api1">
 
     <fragment
-        android:id="@+id/navigation_chronology"
-        android:name="com.example.apiprojectdiablodamo.ui.ChronologyFragment"
+        android:id="@+id/navigation_api1"
+        android:name="com.example.apiprojectdiablodamo.ui.CharacterFragment"
         android:label="API 1"
-        tools:layout="@layout/fragment_chronology" />
+        tools:layout="@layout/fragment_character" />
 
     <fragment
-        android:id="@+id/navigation_acts"
+        android:id="@+id/navigation_api2"
         android:name="com.example.apiprojectdiablodamo.ui.ActsFragment"
         android:label="API 2"
         tools:layout="@layout/fragment_acts" />
 
     <fragment
-        android:id="@+id/navigation_craft"
+        android:id="@+id/navigation_api3"
         android:name="com.example.apiprojectdiablodamo.ui.CraftFragment"
         android:label="API 3"
         tools:layout="@layout/fragment_craft" />
 
     <fragment
-        android:id="@+id/navigation_item"
+        android:id="@+id/navigation_favoritos"
         android:name="com.example.apiprojectdiablodamo.ui.ItemFragment"
         android:label="Favoritos"
         tools:layout="@layout/fragment_item" />
