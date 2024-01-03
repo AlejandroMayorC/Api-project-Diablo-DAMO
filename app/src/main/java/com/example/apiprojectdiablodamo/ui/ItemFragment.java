@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.apiprojectdiablodamo.API.PersonajeAdapter;
 import com.example.apiprojectdiablodamo.R;
 
 public class ItemFragment extends Fragment {
@@ -21,28 +23,16 @@ public class ItemFragment extends Fragment {
         // Required empty public constructor
     }
 
-    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_item, container, false);
+        View view = inflater.inflate(R.layout.fragment_item, container, false);
 
-        textViewTitle = root.findViewById(R.id.textViewTitle);
-        recyclerView = root.findViewById(R.id.recyclerView);
-
-        // Aquí se configuraría el RecyclerView con un LayoutManager y un Adapter
+        recyclerView = view.findViewById(R.id.recyclerViewFavoritos);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        // Datos de ejemplo, reemplar con los propios datos de la API
-        String[] myData = {"Dato 1", "Dato 2", "Dato 3"};
-        MyAdapter adapter = new MyAdapter(myData);
-        recyclerView.setAdapter(adapter);
 
-        // Establecer el título según la opción del menú seleccionada
-        // textViewTitle.setText("Favoritos");
 
-        return root;
+        return view;
     }
 
-    // Aquí podrías incluir más métodos, por ejemplo, para actualizar la lista cuando se seleccionan los botones
 }
