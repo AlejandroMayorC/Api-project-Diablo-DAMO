@@ -55,5 +55,7 @@ dependencies {
     // Dependencias para el Navigation Component
     implementation("androidx.navigation:navigation-fragment-ktx:2.4.2")
     implementation("androidx.navigation:navigation-ui-ktx:2.4.2")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    implementation ("com.google.code.gson:gson:2.8.6")
 
 }

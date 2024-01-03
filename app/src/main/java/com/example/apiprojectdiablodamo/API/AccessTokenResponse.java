@@ -37,6 +37,4 @@ public class AccessTokenResponse {
     public void setSub(String sub) {
         this.sub = sub;
     }
-
-    // Getters y setters...
 }

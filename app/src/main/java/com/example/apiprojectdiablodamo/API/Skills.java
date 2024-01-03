@@ -1,8 +1,9 @@
 package com.example.apiprojectdiablodamo.API;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Skills {
+public class Skills implements Serializable {
     private List<Skill> active;
     private List<Skill> passive;
 

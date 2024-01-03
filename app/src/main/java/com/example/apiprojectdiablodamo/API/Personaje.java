@@ -1,8 +1,19 @@
 package com.example.apiprojectdiablodamo.API;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.apiprojectdiablodamo.R;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class Personaje {
+public class Personaje implements Serializable{
     private String slug;
     private String name;
     private String maleName;
@@ -20,6 +31,7 @@ public class Personaje {
         this.skillCategories = skillCategories;
         this.skills = skills;
     }
+
 
     public String getSlug() {
         return slug;

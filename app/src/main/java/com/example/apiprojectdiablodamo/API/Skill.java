@@ -1,6 +1,8 @@
 package com.example.apiprojectdiablodamo.API;
 
-public class Skill {
+import java.io.Serializable;
+
+public class Skill implements Serializable {
     private String slug;
     private String name;
     private String icon;

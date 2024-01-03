@@ -34,9 +34,9 @@ public class SegonaActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_chronology, R.id.navigation_acts, R.id.navigation_craft, R.id.navigation_item)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_segona);
+        /*NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_segona);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        NavigationUI.setupWithNavController(binding.navView, navController);*/
     }
 
 }
