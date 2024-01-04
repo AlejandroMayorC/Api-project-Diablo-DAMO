@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.apiprojectdiablodamo.R;
+import com.example.apiprojectdiablodamo.ui.OnFavoriteClicked;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
 
     private List<Personaje> listaPersonajes;
     private OnPersonajeClickListener listener;
+    private OnFavoriteClicked listenerFav;
 
     public PersonajeAdapter(List<Personaje> listaPersonajes) {
         this.listaPersonajes = listaPersonajes;
@@ -28,11 +31,13 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
         // Aquí defines los elementos de la vista, como TextViews, ImageViews, etc.
         public TextView textViewNombre;
         public ImageView imageViewIcono;
+        public ImageButton Btn_preferits_character;
 
         public PersonajeViewHolder(View itemView) {
             super(itemView);
             textViewNombre = itemView.findViewById(R.id.textViewNombre);
             imageViewIcono = itemView.findViewById(R.id.imageViewIcono);
+            Btn_preferits_character = itemView.findViewById(R.id.Btn_preferits_character);
         }
     }
 
@@ -74,9 +79,27 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
                 intent.putExtra("imagenUrl", imageUrl);
                 v.getContext().startActivity(intent);
             });
+
+            // Configuració visual basada en l'estat de preferit del personatge
+            if (personaje.getPreferit()) {
+                holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
+            } else {
+                holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
+            }
+
+            holder.Btn_preferits_character.setOnClickListener(v -> {
+                // Inverteix l'estat de preferit del personatge
+                personaje.setPreferit(!personaje.getPreferit());
+
+                // Notifica els canvis al RecyclerView
+                notifyDataSetChanged();
+
+                // Aquí pots cridar una funció del listener si necessites informar a altres components de l'acció
+                /*if (listener != null) {
+                    listenerFav.onFavoriteClicked(personaje);
+                }*/
+            });
         }
-
-
 
     }
     private String obtenerUrlImagen(String slug) {

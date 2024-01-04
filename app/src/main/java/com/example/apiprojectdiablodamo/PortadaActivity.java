@@ -25,7 +25,7 @@ public class PortadaActivity extends AppCompatActivity {
         IniciActivitat_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PortadaActivity.this, ApiActivity.class);
+                Intent intent = new Intent(PortadaActivity.this, SegonaActivity.class);
                 startActivity(intent);
             }
         });

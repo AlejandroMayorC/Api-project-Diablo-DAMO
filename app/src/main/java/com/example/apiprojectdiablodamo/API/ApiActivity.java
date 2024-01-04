@@ -14,7 +14,7 @@ import com.example.apiprojectdiablodamo.R;
 import com.example.apiprojectdiablodamo.ui.ActsFragment;
 import com.example.apiprojectdiablodamo.ui.CharacterFragment;
 import com.example.apiprojectdiablodamo.ui.CraftFragment;
-import com.example.apiprojectdiablodamo.ui.ItemFragment;
+import com.example.apiprojectdiablodamo.ui.PreferitsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
@@ -60,7 +60,7 @@ public class ApiActivity extends AppCompatActivity {
                 } else if (itemId == R.id.navigation_api3) {
                     fragment = new CraftFragment();
                 } else if (itemId == R.id.navigation_favoritos) {
-                    fragment = new ItemFragment();
+                    fragment = new PreferitsFragment();
                 }
 
                 if (fragment != null) {

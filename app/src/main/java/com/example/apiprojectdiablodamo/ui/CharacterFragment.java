@@ -47,6 +47,7 @@ public class CharacterFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new PersonajeAdapter(listaPersonajes);
         recyclerView.setAdapter(adapter);
+
         adapter.setOnPersonajeClickListener(personaje -> {
             Context context = getActivity();
             if (context != null) {
@@ -65,8 +66,8 @@ public class CharacterFragment extends Fragment {
         cargarPersonajes(); // Recargar los datos cuando el Fragment se reanuda
     }
     private void cargarPersonajes() {
-        String clientId = "tus_datos_client_id";
-        String clientSecret = "tus_datos_client_secret";
+        String clientId = "0cd1b84e2eb34dcf89f6731e1282f74e";
+        String clientSecret = "6MKHGsFhv8dU9lE3jvL9z2aUhpGsmbwW";
         String credentials = clientId + ":" + clientSecret;
         String authHeaderValue = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
 

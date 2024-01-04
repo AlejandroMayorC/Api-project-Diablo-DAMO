@@ -4,22 +4,15 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 
 import com.example.apiprojectdiablodamo.ui.ActsFragment;
 import com.example.apiprojectdiablodamo.ui.CharacterFragment;
 import com.example.apiprojectdiablodamo.ui.CraftFragment;
-import com.example.apiprojectdiablodamo.ui.ItemFragment;
+import com.example.apiprojectdiablodamo.ui.PreferitsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.example.apiprojectdiablodamo.databinding.ActivitySegonaBinding;
 
 public class SegonaActivity extends AppCompatActivity {
 
@@ -42,7 +35,7 @@ public class SegonaActivity extends AppCompatActivity {
                 } else if (itemId == R.id.navigation_api3) {
                     fragment = new CraftFragment();
                 } else if (itemId == R.id.navigation_favoritos) {
-                    fragment = new ItemFragment();
+                    fragment = new PreferitsFragment();
                 }
 
                 if (fragment != null) {

@@ -21,6 +21,7 @@ public class Personaje implements Serializable{
     private String icon;
     private List<SkillCategory> skillCategories;
     private Skills skills;
+    private boolean esPreferit;
 
     public Personaje(String slug, String name, String maleName, String femaleName, String icon, List<SkillCategory> skillCategories, Skills skills) {
         this.slug = slug;
@@ -87,5 +88,13 @@ public class Personaje implements Serializable{
 
     public void setSkills(Skills skills) {
         this.skills = skills;
+    }
+
+    public boolean getPreferit() {
+        return esPreferit;
+    }
+
+    public void setPreferit(boolean esPreferit) {
+        this.esPreferit = esPreferit;
     }
 }

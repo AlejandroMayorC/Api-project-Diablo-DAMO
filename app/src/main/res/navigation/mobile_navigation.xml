@@ -25,8 +25,8 @@
 
     <fragment
         android:id="@+id/navigation_favoritos"
-        android:name="com.example.apiprojectdiablodamo.ui.ItemFragment"
+        android:name="com.example.apiprojectdiablodamo.ui.PreferitsFragment"
         android:label="Favoritos"
-        tools:layout="@layout/fragment_item" />
+        tools:layout="@layout/fragment_preferits" />
 
 </navigation>
