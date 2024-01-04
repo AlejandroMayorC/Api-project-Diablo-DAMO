@@ -3,10 +3,19 @@ package com.example.apiprojectdiablodamo.API;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.apiprojectdiablodamo.R;
+import com.example.apiprojectdiablodamo.ui.ActsFragment;
+import com.example.apiprojectdiablodamo.ui.CharacterFragment;
+import com.example.apiprojectdiablodamo.ui.CraftFragment;
+import com.example.apiprojectdiablodamo.ui.ItemFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
 import retrofit2.Call;
@@ -24,7 +33,7 @@ public class ApiActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_character);
+        setContentView(R.layout.activity_segona);
 
         recyclerView = findViewById(R.id.recyclerViewPersonajes);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -36,6 +45,41 @@ public class ApiActivity extends AppCompatActivity {
             intent.putExtra("JSON_PERSONAJE", new Gson().toJson(personaje));
             startActivity(intent);
         });
+
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fragment = null;
+
+                int itemId = item.getItemId();
+                if (itemId == R.id.navigation_api1) {
+                    fragment = new CharacterFragment();
+                } else if (itemId == R.id.navigation_api2) {
+                    fragment = new ActsFragment();
+                } else if (itemId == R.id.navigation_api3) {
+                    fragment = new CraftFragment();
+                } else if (itemId == R.id.navigation_favoritos) {
+                    fragment = new ItemFragment();
+                }
+
+                if (fragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .commit();
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
+        // Cargar el primer fragment por defecto
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new CharacterFragment())
+                    .commit();
+        }
 
         String clientId = "0cd1b84e2eb34dcf89f6731e1282f74e";
         String clientSecret = "6MKHGsFhv8dU9lE3jvL9z2aUhpGsmbwW";
@@ -85,3 +129,4 @@ public class ApiActivity extends AppCompatActivity {
         }
     }
 }
+
