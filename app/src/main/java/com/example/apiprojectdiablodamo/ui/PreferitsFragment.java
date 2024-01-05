@@ -20,7 +20,7 @@ public class PreferitsFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private PreferitsAdapter adapter;
-    private List<Object> listPreferits = new ArrayList<>();
+    private List<Object> listPreferits = PreferitsListManager.getInstance().getLlistaPreferits();
 
     public PreferitsFragment() {
         // Required empty public constructor

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.apiprojectdiablodamo.R;
 import com.example.apiprojectdiablodamo.ui.OnFavoriteClicked;
+import com.example.apiprojectdiablodamo.ui.PreferitsListManager;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -81,7 +82,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
             });
 
             // Configuració visual basada en l'estat de preferit del personatge
-            if (personaje.getPreferit()) {
+            if (PreferitsListManager.getInstance().esPreferit(personaje.getName())) {
                 holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
             } else {
                 holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
@@ -91,18 +92,20 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
                 // Inverteix l'estat de preferit del personatge
                 personaje.setPreferit(!personaje.getPreferit());
 
+                // Actualitza l'estat del preferit a PreferitsListManager
+                if (personaje.getPreferit()) {
+                    PreferitsListManager.getInstance().afegirPreferit(personaje);
+                } else {
+                    PreferitsListManager.getInstance().eliminarPreferit(personaje);
+                }
+
                 // Notifica els canvis al RecyclerView
                 notifyDataSetChanged();
-
-                // Aquí pots cridar una funció del listener si necessites informar a altres components de l'acció
-                /*if (listener != null) {
-                    listenerFav.onFavoriteClicked(personaje);
-                }*/
             });
         }
 
     }
-    private String obtenerUrlImagen(String slug) {
+    public static String obtenerUrlImagen(String slug) {
         switch (slug) {
             case "barbarian": return "https://media.vandal.net/i/620x348/11-2018/20181151810494_1.jpg";
             case "wizard": return "https://media.vandal.net/i/620x294/11-2018/20181151810494_4.jpg";

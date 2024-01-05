@@ -63,7 +63,7 @@ public class CharacterFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        cargarPersonajes(); // Recargar los datos cuando el Fragment se reanuda
+        //cargarPersonajes(); // Recargar los datos cuando el Fragment se reanuda
     }
     private void cargarPersonajes() {
         String clientId = "0cd1b84e2eb34dcf89f6731e1282f74e";
