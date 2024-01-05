@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +39,8 @@ public class CharacterFragment extends Fragment {
     private RecyclerView recyclerView;
     private PersonajeAdapter adapter;
     private List<Personaje> listaPersonajes = new ArrayList<>();
+    private List<Personaje> listaPersonajesOriginal = new ArrayList<>();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class CharacterFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new PersonajeAdapter(listaPersonajes);
         recyclerView.setAdapter(adapter);
+        SearchView searchView = view.findViewById(R.id.searchView);
 
         adapter.setOnPersonajeClickListener(personaje -> {
             Context context = getActivity();
@@ -56,7 +60,25 @@ public class CharacterFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        cargarPersonajes();
+        // Configurado el SearchView
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                buscarPersonajes(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()) {
+                    // Si el texto de búsqueda está vacío, muestra la lista completa
+                    adapter.actualizarListaPersonajes(listaPersonajesOriginal);
+                } else {
+                    buscarPersonajes(newText);
+                }
+                return false;
+            }
+        });
         return view;
     }
 
@@ -65,6 +87,21 @@ public class CharacterFragment extends Fragment {
         super.onResume();
         cargarPersonajes(); // Recargar los datos cuando el Fragment se reanuda
     }
+
+    private void buscarPersonajes(String textoBusqueda) {
+        if (textoBusqueda != null && !textoBusqueda.isEmpty()) {
+            List<Personaje> listaFiltrada = new ArrayList<>();
+            for (Personaje personaje : listaPersonajesOriginal) {
+                if (personaje.getName().toLowerCase().contains(textoBusqueda.toLowerCase())) {
+                    listaFiltrada.add(personaje);
+                }
+            }
+            adapter.actualizarListaPersonajes(listaFiltrada);
+        } else {
+            adapter.actualizarListaPersonajes(listaPersonajesOriginal);
+        }
+    }
+
     private void cargarPersonajes() {
         String clientId = "0cd1b84e2eb34dcf89f6731e1282f74e";
         String clientSecret = "6MKHGsFhv8dU9lE3jvL9z2aUhpGsmbwW";
@@ -99,9 +136,9 @@ public class CharacterFragment extends Fragment {
                 @Override
                 public void onResponse(Call<Personaje> call, Response<Personaje> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        // Asegúrate de actualizar la UI en el hilo principal
                         getActivity().runOnUiThread(() -> {
-                            listaPersonajes.add(response.body());
+                            listaPersonajesOriginal.add(response.body()); // Añadir a lista original
+                            listaPersonajes.add(response.body()); // Añadir a lista usada por el adapter
                             adapter.notifyDataSetChanged();
                             Log.d("API Success", "Personaje añadido: " + response.body().toString());
                         });
