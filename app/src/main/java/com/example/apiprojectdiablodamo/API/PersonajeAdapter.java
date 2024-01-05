@@ -42,6 +42,13 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
         }
     }
 
+    // Método para actualizar la lista de personajes
+    public void actualizarListaPersonajes(List<Personaje> nuevaLista) {
+        listaPersonajes.clear();
+        listaPersonajes.addAll(nuevaLista);
+        notifyDataSetChanged();
+    }
+
     @Override
     public PersonajeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.personaje_item, parent, false);
