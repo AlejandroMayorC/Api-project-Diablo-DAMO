@@ -85,7 +85,7 @@ public class CharacterFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //cargarPersonajes(); // Recargar los datos cuando el Fragment se reanuda
+        cargarPersonajes(); // Recargar los datos cuando el Fragment se reanuda
     }
 
     private void buscarPersonajes(String textoBusqueda) {
