@@ -37,7 +37,7 @@ public class ApiActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewPersonajes);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new PersonajeAdapter(listaPersonajes);
+        adapter = new PersonajeAdapter(listaPersonajes, getApplicationContext());
         recyclerView.setAdapter(adapter);
 
         adapter.setOnPersonajeClickListener(personaje -> {

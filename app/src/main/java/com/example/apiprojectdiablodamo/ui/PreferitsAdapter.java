@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,9 +18,15 @@ import com.example.apiprojectdiablodamo.API.Personaje;
 import com.example.apiprojectdiablodamo.API.PersonajeAdapter;
 import com.example.apiprojectdiablodamo.R;
 import com.google.android.gms.common.images.ImageManager;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -30,7 +37,6 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public PreferitsAdapter(List<Object> listPreferits) {
         this.listPreferits = listPreferits;
     }
-
 
     public static class PersonajeViewHolder extends RecyclerView.ViewHolder {
         // Aquí defines los elementos de la vista, como TextViews, ImageViews, etc.
@@ -97,7 +103,6 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                     .into(personajeViewHolder.imageViewIcono);
                         }
                     }
-                    // Resta del teu codi de configuració per a PersonajeViewHolder
                 }
                 break;
             /*case TYPE_ITEM:
@@ -141,8 +146,6 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             notifyItemRangeChanged(position, listPreferits.size());
         }
     }
-
-
 
     /*public class MyViewHolder extends RecyclerView.ViewHolder {
 

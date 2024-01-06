@@ -52,7 +52,7 @@ public class CharacterFragment extends Fragment {
         listaPersonajes = PersonajeManager.getInstance().getPersonajes();
         recyclerView = view.findViewById(R.id.recyclerViewPersonajes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new PersonajeAdapter(listaPersonajes);
+        adapter = new PersonajeAdapter(listaPersonajes, getContext());
         recyclerView.setAdapter(adapter);
         SearchView searchView = view.findViewById(R.id.searchView);
 
