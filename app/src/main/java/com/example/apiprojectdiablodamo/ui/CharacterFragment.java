@@ -26,6 +26,7 @@ import com.example.apiprojectdiablodamo.API.ApiService;
 import com.example.apiprojectdiablodamo.API.DetallePersonajeActivity;
 import com.example.apiprojectdiablodamo.API.Personaje;
 import com.example.apiprojectdiablodamo.API.PersonajeAdapter;
+import com.example.apiprojectdiablodamo.API.PersonajeManager;
 import com.example.apiprojectdiablodamo.R;
 import com.google.gson.Gson;
 
@@ -48,6 +49,7 @@ public class CharacterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_character, container, false);
 
+        listaPersonajes = PersonajeManager.getInstance().getPersonajes();
         recyclerView = view.findViewById(R.id.recyclerViewPersonajes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new PersonajeAdapter(listaPersonajes);
@@ -106,6 +108,10 @@ public class CharacterFragment extends Fragment {
 
     private void cargarPersonajes() {
         if (!listaPersonajesOriginal.isEmpty()) {
+            // La lista ya está cargada, no es necesario volver a cargarla
+            return;
+        }
+        if (!listaPersonajes.isEmpty()) {
             // La lista ya está cargada, no es necesario volver a cargarla
             return;
         }

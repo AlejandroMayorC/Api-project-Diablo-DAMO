@@ -96,17 +96,13 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
             }
 
             holder.Btn_preferits_character.setOnClickListener(v -> {
-                // Inverteix l'estat de preferit del personatge
                 personaje.setPreferit(!personaje.getPreferit());
-
-                // Actualitza l'estat del preferit a PreferitsListManager
                 if (personaje.getPreferit()) {
                     PreferitsListManager.getInstance().afegirPreferit(personaje);
                 } else {
                     PreferitsListManager.getInstance().eliminarPreferit(personaje);
                 }
 
-                // Notifica els canvis al RecyclerView
                 notifyDataSetChanged();
             });
         }
