@@ -1,6 +1,7 @@
 package com.example.apiprojectdiablodamo.API;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +25,9 @@ public class DetallePersonajeActivity extends AppCompatActivity {
 
         // Configurar la vista con la información del personaje
         ImageView imageView = findViewById(R.id.imageViewDetalle);
-        TextView textViewDescripcion = findViewById(R.id.textViewDescripcion);
+        TextView textViewHabilidadesActivas = findViewById(R.id.textViewHabilidadesActivas);
+        TextView textViewHabilidadesPasivas = findViewById(R.id.textViewHabilidadesPasivas);
+        TextView textViewNombre = findViewById(R.id.textViewNombre);
 
         // Cargar la imagen desde la URL recibida
         Glide.with(this).load(imageUrl).into(imageView);
@@ -32,20 +35,28 @@ public class DetallePersonajeActivity extends AppCompatActivity {
         // Deserializar el JSON a un objeto Personaje
         try {
             Personaje personaje = new Gson().fromJson(personajeJson, Personaje.class);
-            // Mostrar detalles del personaje
-            StringBuilder descripcion = new StringBuilder();
-            descripcion.append("Nombre: ").append(personaje.getName()).append("\n");
-            descripcion.append("Habilidades Activas:").append("\n");
+
+            // Establecer el nombre del personaje
+            textViewNombre.setText(personaje.getName());
+
+            // Formatear y mostrar detalles de habilidades activas
+            StringBuilder descripcionActivas = new StringBuilder();
+            descripcionActivas.append("<b>Habilidades Activas:</b><br/>");
             for (Skill skill : personaje.getSkills().getActive()) {
-                descripcion.append("- ").append(skill.getName()).append(" (Nivel ").append(skill.getLevel()).append(")\n");
+                descripcionActivas.append("- ").append(skill.getName()).append(" (Nivel ").append(skill.getLevel()).append(")<br/>");
             }
-            descripcion.append("Habilidades Pasivas:").append("\n");
+            textViewHabilidadesActivas.setText(Html.fromHtml(descripcionActivas.toString(), Html.FROM_HTML_MODE_LEGACY));
+
+            // Formatear y mostrar detalles de habilidades pasivas
+            StringBuilder descripcionPasivas = new StringBuilder();
+            descripcionPasivas.append("<b>Habilidades Pasivas:</b><br/>");
             for (Skill skill : personaje.getSkills().getPassive()) {
-                descripcion.append("- ").append(skill.getName()).append("\n");
+                descripcionPasivas.append("- ").append(skill.getName()).append("<br/>");
             }
-            textViewDescripcion.setText(descripcion.toString());
+            textViewHabilidadesPasivas.setText(Html.fromHtml(descripcionPasivas.toString(), Html.FROM_HTML_MODE_LEGACY));
         } catch (Exception e) {
-            textViewDescripcion.setText("Error al mostrar los detalles del personaje.");
+            textViewHabilidadesActivas.setText("Error al mostrar las habilidades activas.");
+            textViewHabilidadesPasivas.setText("Error al mostrar las habilidades pasivas.");
         }
 
         // Configurar botón de retroceso
