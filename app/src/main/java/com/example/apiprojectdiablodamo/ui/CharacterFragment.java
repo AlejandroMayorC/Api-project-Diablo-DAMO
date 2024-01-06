@@ -40,6 +40,8 @@ public class CharacterFragment extends Fragment {
     private PersonajeAdapter adapter;
     private List<Personaje> listaPersonajes = new ArrayList<>();
     private List<Personaje> listaPersonajesOriginal = new ArrayList<>();
+    private List<Call> activeCalls = new ArrayList<>();
+
 
 
     @Override
@@ -136,14 +138,17 @@ public class CharacterFragment extends Fragment {
                 @Override
                 public void onResponse(Call<Personaje> call, Response<Personaje> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        getActivity().runOnUiThread(() -> {
-                            listaPersonajesOriginal.add(response.body()); // Añadir a lista original
-                            listaPersonajes.add(response.body()); // Añadir a lista usada por el adapter
-                            adapter.notifyDataSetChanged();
-                            Log.d("API Success", "Personaje añadido: " + response.body().toString());
-                        });
+                        // Verificar que el Fragment está agregado y el Activity no es nulo
+                        if (isAdded() && getActivity() != null) {
+                            getActivity().runOnUiThread(() -> {
+                                // Actualizar la UI aquí
+                                listaPersonajesOriginal.add(response.body()); // Añadir a lista original
+                                listaPersonajes.add(response.body()); // Añadir a lista usada por el adapter
+                                adapter.notifyDataSetChanged();
+                            });
+                        }
                     } else {
-                        Log.d("API Error", "Respuesta no exitosa");
+                        Log.e("API Error", "Código de error: " + response.code());
                     }
                 }
 
@@ -152,6 +157,19 @@ public class CharacterFragment extends Fragment {
                     Log.d("API Failure", "Error al llamar a la API", t);
                 }
             });
+            // Añadir la llamada a una lista para poder cancelarla después si es necesario
+            activeCalls.add(callPersonaje);
         }
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // Cancelar todas las llamadas activas
+        for (Call call : activeCalls) {
+            call.cancel();
+        }
+    }
+
+
 }
