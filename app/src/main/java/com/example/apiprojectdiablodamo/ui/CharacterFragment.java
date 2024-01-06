@@ -105,6 +105,10 @@ public class CharacterFragment extends Fragment {
     }
 
     private void cargarPersonajes() {
+        if (!listaPersonajesOriginal.isEmpty()) {
+            // La lista ya está cargada, no es necesario volver a cargarla
+            return;
+        }
         String clientId = "0cd1b84e2eb34dcf89f6731e1282f74e";
         String clientSecret = "6MKHGsFhv8dU9lE3jvL9z2aUhpGsmbwW";
         String credentials = clientId + ":" + clientSecret;
