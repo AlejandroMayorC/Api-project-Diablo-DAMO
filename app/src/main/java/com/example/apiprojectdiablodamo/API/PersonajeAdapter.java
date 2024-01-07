@@ -1,6 +1,5 @@
 package com.example.apiprojectdiablodamo.API;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -16,12 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.apiprojectdiablodamo.R;
-import com.example.apiprojectdiablodamo.ui.MyAdapter;
 import com.example.apiprojectdiablodamo.ui.OnFavoriteClicked;
 import com.example.apiprojectdiablodamo.ui.PreferitsListManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.Firebase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
@@ -107,19 +104,37 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
             });
 
             // Configuració visual basada en l'estat de preferit del personatge
-            if (PreferitsListManager.getInstance().esPreferit(personaje.getName())) {
+            /*if (PreferitsListManager.getInstance().esPreferit(personaje.getName())) {
                 holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
             } else {
                 holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
-            }
+            }*/
+
+            //Afegir com a preferit si personatge és a la DB Firebase
+            mFirestore.collection("Preferits")
+                    .whereEqualTo("name", personaje.getName())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                            // El personatge és a la base de dades, i s'actualitza el ImageButton.
+                            holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
+                        } else {
+                            // El personatge no és a la base de dades, no és un preferit.
+                            holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Maneig de l'error en cas que la consulta no funcioni.
+                    });
 
             holder.Btn_preferits_character.setOnClickListener(v -> {
                 personaje.setPreferit(!personaje.getPreferit());
                 if (personaje.getPreferit()) {
                     PreferitsListManager.getInstance().afegirPreferit(personaje);
-                    putClass(personaje);
+                    putClassDB(personaje);
                 } else {
                     PreferitsListManager.getInstance().eliminarPreferit(personaje);
+                    //Eliminar personatge de la DB Firebase
                 }
 
                 notifyDataSetChanged();
@@ -140,7 +155,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
         }
     }
 
-    private void putClass(Personaje personaje) {
+    private void putClassDB(Personaje personaje) {
         Map<String, Object> map = new HashMap<>();
         String name = personaje.getName();
         map.put("name", name);
@@ -177,6 +192,10 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
                 Toast.makeText(context, "Error a l'afegir item", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void deleteClassDB(Personaje personaje) {
+
     }
     
     @Override

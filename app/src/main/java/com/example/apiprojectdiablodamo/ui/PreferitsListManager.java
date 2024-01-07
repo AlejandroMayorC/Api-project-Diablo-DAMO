@@ -30,7 +30,6 @@ public class PreferitsListManager {
             Personaje personajeEliminar = (Personaje) preferit;
             llistaPreferits.removeIf(p -> p instanceof Personaje && ((Personaje) p).getName().equals(personajeEliminar.getName()));
         }
-        // Similar para otros tipos de objetos, si los hay.
     }
 
     public boolean esPreferit(String name) {
@@ -44,7 +43,5 @@ public class PreferitsListManager {
         }
         return false;
     }
-
-    // Altres mètodes per gestionar la llista de preferits...
 }
 
