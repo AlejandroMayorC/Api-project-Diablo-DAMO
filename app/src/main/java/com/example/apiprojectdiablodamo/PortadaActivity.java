@@ -1,14 +1,13 @@
 package com.example.apiprojectdiablodamo;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.apiprojectdiablodamo.API.ApiActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-
-import com.example.apiprojectdiablodamo.API.ApiActivity;
 
 public class PortadaActivity extends AppCompatActivity {
 
