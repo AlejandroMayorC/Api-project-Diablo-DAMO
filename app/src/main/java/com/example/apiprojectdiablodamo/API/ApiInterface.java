@@ -22,6 +22,9 @@ public interface ApiInterface {
 
     @GET("d3/data/hero/{classSlug}")
     Call<Personaje> obtenerPersonaje(@Path("classSlug") String classSlug, @Header("Authorization") String authToken);
+    @GET("d3/data/item/{itemSlug}")
+    Call<Item> obtenerItem(@Path("itemSlug") String itemSlug, @Header("Authorization") String authToken);
+
 
 
 

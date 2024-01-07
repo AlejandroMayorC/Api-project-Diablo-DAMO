@@ -1,5 +1,7 @@
 package com.example.apiprojectdiablodamo.API;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -9,9 +11,13 @@ public class ApiService {
     private static final String BASE_URL_API = "https://us.api.blizzard.com/";
 
     private static Retrofit getRetrofitInstance(String baseUrl) {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Double.class, new CustomDoubleDeserializer())
+                .create();
+
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
 
@@ -23,4 +29,3 @@ public class ApiService {
         return getRetrofitInstance(BASE_URL_API).create(ApiInterface.class);
     }
 }
-

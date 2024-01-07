@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_api2"
-        android:name="com.example.apiprojectdiablodamo.ui.ActsFragment"
+        android:name="com.example.apiprojectdiablodamo.ui.ItemsFragment"
         android:label="API 2"
-        tools:layout="@layout/fragment_acts" />
+        tools:layout="@layout/fragment_items" />
 
     <fragment
         android:id="@+id/navigation_api3"

@@ -4,15 +4,14 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
-
-import com.example.apiprojectdiablodamo.ui.ActsFragment;
-import com.example.apiprojectdiablodamo.ui.CharacterFragment;
-import com.example.apiprojectdiablodamo.ui.CraftFragment;
-import com.example.apiprojectdiablodamo.ui.PreferitsFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import com.example.apiprojectdiablodamo.ui.CharacterFragment;
+import com.example.apiprojectdiablodamo.ui.CraftFragment;
+import com.example.apiprojectdiablodamo.ui.ItemsFragment;
+import com.example.apiprojectdiablodamo.ui.PreferitsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SegonaActivity extends AppCompatActivity {
 
@@ -30,9 +29,9 @@ public class SegonaActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
                 if (itemId == R.id.navigation_api1) {
                     fragment = new CharacterFragment();
-                } else if (itemId == R.id.navigation_api2) {
-                    fragment = new ActsFragment();
-                } else if (itemId == R.id.navigation_api3) {
+                } else if (itemId == R.id.navigation_api2){
+                    fragment = new ItemsFragment();
+                }else if (itemId == R.id.navigation_api3) {
                     fragment = new CraftFragment();
                 } else if (itemId == R.id.navigation_favoritos) {
                     fragment = new PreferitsFragment();
