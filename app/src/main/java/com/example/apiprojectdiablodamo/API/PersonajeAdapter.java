@@ -1,5 +1,7 @@
 package com.example.apiprojectdiablodamo.API;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,25 +9,40 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.apiprojectdiablodamo.R;
+import com.example.apiprojectdiablodamo.ui.MyAdapter;
 import com.example.apiprojectdiablodamo.ui.OnFavoriteClicked;
 import com.example.apiprojectdiablodamo.ui.PreferitsListManager;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Firebase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.PersonajeViewHolder> {
 
+    private final Context context;
     private List<Personaje> listaPersonajes;
     private OnPersonajeClickListener listener;
     private OnFavoriteClicked listenerFav;
+    private FirebaseFirestore mFirestore;
 
-    public PersonajeAdapter(List<Personaje> listaPersonajes) {
+    public PersonajeAdapter(List<Personaje> listaPersonajes, Context context) {
         this.listaPersonajes = listaPersonajes;
+        this.context=context;
     }
 
     public static class PersonajeViewHolder extends RecyclerView.ViewHolder {
@@ -52,6 +69,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
     @Override
     public PersonajeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_for_recyclers, parent, false);
+        mFirestore = FirebaseFirestore.getInstance();
         return new PersonajeViewHolder(view);
     }
 
@@ -99,6 +117,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
                 personaje.setPreferit(!personaje.getPreferit());
                 if (personaje.getPreferit()) {
                     PreferitsListManager.getInstance().afegirPreferit(personaje);
+                    putClass(personaje);
                 } else {
                     PreferitsListManager.getInstance().eliminarPreferit(personaje);
                 }
@@ -121,7 +140,45 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
         }
     }
 
+    private void putClass(Personaje personaje) {
+        Map<String, Object> map = new HashMap<>();
+        String name = personaje.getName();
+        map.put("name", name);
 
+        // Habilitats actives
+        List<Map<String, Object>> habilitatsActives = new ArrayList<>();
+        for (Skill skill : personaje.getSkills().getActive()) {
+            Map<String, Object> mapSkill = new HashMap<>();
+            mapSkill.put("nom", skill.getName());
+            mapSkill.put("nivell", skill.getLevel());
+            habilitatsActives.add(mapSkill);
+        }
+        map.put("habilitats_actives", habilitatsActives);
+
+        // Habilitats passives
+        List<String> habilitatsPassives = new ArrayList<>();
+        for (Skill skill : personaje.getSkills().getPassive()) {
+            habilitatsPassives.add(skill.getName());
+        }
+        map.put("habilitats_passives", habilitatsPassives);
+
+        // Ara tens tota la informació del personatge dins del mapPersonaje
+
+        // Fer el que vulguis amb aquest map, com afegir-ho a Firestore, per exemple.
+        // mFirestore.collection("Personajes").add(mapPersonaje)...
+        mFirestore.collection("Preferits").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Toast.makeText(context, "Afegit correctament", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Error a l'afegir item", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    
     @Override
     public int getItemCount() {
         return listaPersonajes.size();

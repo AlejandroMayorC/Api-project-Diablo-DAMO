@@ -41,15 +41,15 @@ public class DetallePersonajeActivity extends AppCompatActivity {
 
             // Formatear y mostrar detalles de habilidades activas
             StringBuilder descripcionActivas = new StringBuilder();
-            descripcionActivas.append("<b>Habilidades Activas:</b><br/>");
+            descripcionActivas.append("<b>Habilitats Actives:</b><br/>");
             for (Skill skill : personaje.getSkills().getActive()) {
-                descripcionActivas.append("- ").append(skill.getName()).append(" (Nivel ").append(skill.getLevel()).append(")<br/>");
+                descripcionActivas.append("- ").append(skill.getName()).append(" (Nivell ").append(skill.getLevel()).append(")<br/>");
             }
             textViewHabilidadesActivas.setText(Html.fromHtml(descripcionActivas.toString(), Html.FROM_HTML_MODE_LEGACY));
 
             // Formatear y mostrar detalles de habilidades pasivas
             StringBuilder descripcionPasivas = new StringBuilder();
-            descripcionPasivas.append("<b>Habilidades Pasivas:</b><br/>");
+            descripcionPasivas.append("<b>Habilitats Passives:</b><br/>");
             for (Skill skill : personaje.getSkills().getPassive()) {
                 descripcionPasivas.append("- ").append(skill.getName()).append("<br/>");
             }

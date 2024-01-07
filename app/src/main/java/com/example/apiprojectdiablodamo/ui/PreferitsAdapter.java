@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,9 +18,16 @@ import com.example.apiprojectdiablodamo.API.Personaje;
 import com.example.apiprojectdiablodamo.API.PersonajeAdapter;
 import com.example.apiprojectdiablodamo.R;
 import com.google.android.gms.common.images.ImageManager;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -28,9 +36,8 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final int TYPE_ITEM = 2;
 
     public PreferitsAdapter(List<Object> listPreferits) {
-        this.listPreferits = listPreferits;
+        this.listPreferits = new ArrayList<>(listPreferits);
     }
-
 
     public static class PersonajeViewHolder extends RecyclerView.ViewHolder {
         // Aquí defines los elementos de la vista, como TextViews, ImageViews, etc.
@@ -97,7 +104,6 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                     .into(personajeViewHolder.imageViewIcono);
                         }
                     }
-                    // Resta del teu codi de configuració per a PersonajeViewHolder
                 }
                 break;
             /*case TYPE_ITEM:
@@ -134,15 +140,11 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return -1;
     }
 
-    public void eliminarItem(int position) {
-        if (position >= 0 && position < listPreferits.size()) {
-            listPreferits.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, listPreferits.size());
-        }
+    public void actualizarListaPreferits(List<Object> nuevaLista) {
+        listPreferits.clear();
+        listPreferits.addAll(nuevaLista);
+        notifyDataSetChanged();
     }
-
-
 
     /*public class MyViewHolder extends RecyclerView.ViewHolder {
 
