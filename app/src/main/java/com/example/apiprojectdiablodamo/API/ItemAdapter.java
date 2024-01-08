@@ -23,26 +23,19 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.HashMap;
-=======
->>>>>>> 6e6e246bde35ca4fc5e314f13bcd10927fb5629a
 import java.util.List;
 import java.util.Map;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
     private List<Item> listaItems;
-<<<<<<< HEAD
     private final Context context;
     private FirebaseFirestore mFirestore;
-=======
     private List<Item> listaItemsOriginal;
 
     public ItemAdapter(List<Item> listaItems, Context context) {
         this.listaItems = listaItems;
-<<<<<<< HEAD
         this.context=context;
-=======
         this.listaItemsOriginal = new ArrayList<>(this.listaItems);
     }
 
