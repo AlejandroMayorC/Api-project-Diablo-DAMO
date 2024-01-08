@@ -10,13 +10,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.apiprojectdiablodamo.R;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
     private List<Item> listaItems;
+    private List<Item> listaItemsOriginal;
 
     public ItemAdapter(List<Item> listaItems) {
         this.listaItems = listaItems;
+        this.listaItemsOriginal = new ArrayList<>(this.listaItems);
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -66,10 +70,40 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     }
 
     public void actualizarListaItems(List<Item> nuevaLista) {
+        if (nuevaLista == null) {
+            nuevaLista = new ArrayList<>(); // Crear una lista vacía si es nula
+        }
         listaItems.clear();
         listaItems.addAll(nuevaLista);
         notifyDataSetChanged();
     }
+
+    public void filtrarPorCategoria(String categoria) {
+        if (categoria.equals("Tots")) {
+            actualizarListaItems(listaItemsOriginal);
+            return;
+        }
+        List<Item> itemsFiltrados = new ArrayList<>();
+        for (Item item : listaItemsOriginal) {
+            if (categoriaCorresponde(item, categoria)) {
+                itemsFiltrados.add(item);
+            }
+        }
+        actualizarListaItems(itemsFiltrados);
+    }
+
+    private boolean categoriaCorresponde(Item item, String categoria) {
+        // Ejemplo de cómo determinar si un ítem corresponde a una categoría
+        switch (categoria) {
+            case "Consumibles":
+                return item.getSlug().contains("potion");
+            case "Botes":
+                return item.getSlug().contains("boots");
+            // Agregar más casos para las demás categorías
+        }
+        return false;
+    }
+
     public static String obtenerUrlImagen(String slug) {
         switch (slug) {
             //espadas a dos manos
@@ -226,15 +260,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             case "bottomless-potion-of-amplification": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/healthpotionlegendary_09_demonhunter_male.png";
             case "bottomless-potion-of-the-unfettered": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/healthpotionlegendary_11_demonhunter_male.png";
             case "bottomless-potion-of-kulleaid": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/healthpotionlegendary_06_demonhunter_male.png";
-
-
-
-
-
-
-
-
-
 
             default: return "";
         }
