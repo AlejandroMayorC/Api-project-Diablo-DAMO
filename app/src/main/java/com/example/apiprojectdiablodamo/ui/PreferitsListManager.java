@@ -32,6 +32,10 @@ public class PreferitsListManager {
         }
     }
 
+    public void buidarLlistaPreferits() {
+        llistaPreferits.clear();
+    }
+
     public boolean esPreferit(String name) {
         for (Object preferit : llistaPreferits) {
             if (preferit instanceof Personaje) {

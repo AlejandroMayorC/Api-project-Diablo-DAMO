@@ -35,7 +35,7 @@ public class ItemsFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerViewItems);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ItemAdapter(listaItems);
+        adapter = new ItemAdapter(listaItems, getContext());
         recyclerView.setAdapter(adapter);
 
         cargarItems();

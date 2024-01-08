@@ -23,6 +23,7 @@ public class Item implements Serializable {
     private Attributes attributes;
     private List<RandomAffix> randomAffixes;
     private List<?> setItems;
+    private boolean esPreferit;
 
     public Item(String id, String slug, String name, String icon, String tooltipParams, int requiredLevel, boolean accountBound, String flavorText, String typeName, ItemType type, String damage, String dps, String color, boolean isSeasonRequiredToDrop, int seasonRequiredToDrop, List<String> slots, Attributes attributes, List<RandomAffix> randomAffixes, List<?> setItems) {
         this.id = id;
@@ -198,7 +199,13 @@ public class Item implements Serializable {
         this.setItems = setItems;
     }
 
-    // Getters y setters...
+    public boolean getPreferit() {
+        return esPreferit;
+    }
+
+    public void setPreferit(boolean esPreferit) {
+        this.esPreferit = esPreferit;
+    }
 
     public static class ItemType implements Serializable {
         private boolean twoHanded;
@@ -290,8 +297,6 @@ public class Item implements Serializable {
         public void setText(String text) {
             this.text = text;
         }
-
-        // Getters y setters...
     }
 
     public static class RandomAffix implements Serializable {
@@ -309,6 +314,5 @@ public class Item implements Serializable {
             this.oneOf = oneOf;
         }
 
-        // Getters y setters...
     }
 }

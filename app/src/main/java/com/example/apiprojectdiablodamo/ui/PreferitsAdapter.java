@@ -7,27 +7,20 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.apiprojectdiablodamo.API.DetallePersonajeActivity;
+import com.example.apiprojectdiablodamo.API.Item;
 import com.example.apiprojectdiablodamo.API.Personaje;
 import com.example.apiprojectdiablodamo.API.PersonajeAdapter;
 import com.example.apiprojectdiablodamo.R;
-import com.google.android.gms.common.images.ImageManager;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -40,7 +33,6 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public static class PersonajeViewHolder extends RecyclerView.ViewHolder {
-        // Aquí defines los elementos de la vista, como TextViews, ImageViews, etc.
         public TextView textViewNombre;
         public ImageView imageViewIcono;
         public ImageButton Btn_preferits_character;
@@ -50,6 +42,7 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             textViewNombre = itemView.findViewById(R.id.textViewNombre);
             imageViewIcono = itemView.findViewById(R.id.imageViewIcono);
             Btn_preferits_character = itemView.findViewById(R.id.Btn_preferits_character);
+
             Btn_preferits_character.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
@@ -64,7 +57,34 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     }
                 }
             });
+        }
+    }
 
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {
+        public TextView textViewNombre;
+        public ImageView imageViewIcono;
+        public ImageButton Btn_preferits_character;
+
+        public ItemViewHolder(View itemView, PreferitsAdapter adapter) {
+            super(itemView);
+            textViewNombre = itemView.findViewById(R.id.textViewNombre);
+            imageViewIcono = itemView.findViewById(R.id.imageViewIcono);
+            Btn_preferits_character = itemView.findViewById(R.id.Btn_preferits_character);
+
+            Btn_preferits_character.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    Object preferit = adapter.listPreferits.get(position);
+                    if (preferit instanceof Item) {
+                        Item item = (Item) preferit;
+                        Intent intent = new Intent(v.getContext(), DetallePersonajeActivity.class);
+                        intent.putExtra("personajeJson", new Gson().toJson(item));
+                        String imageUrl = PreferitsAdapter.obtenerUrlImagen(item.getSlug());
+                        intent.putExtra("imagenUrl", imageUrl);
+                        v.getContext().startActivity(intent);
+                    }
+                }
+            });
         }
     }
 
@@ -76,9 +96,9 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             case TYPE_PERSONATGE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.personaje_preferit_item, parent, false);
                 return new PersonajeViewHolder(view, this);
-            /*case TYPE_ITEM:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_objeto, parent, false);
-                return new ObjetoViewHolder(view);*/
+            case TYPE_ITEM:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_preferit_info, parent, false);
+                return new ItemViewHolder(view, this);
             default:
                 return null;
         }
@@ -106,15 +126,24 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     }
                 }
                 break;
-            /*case TYPE_ITEM:
+            case TYPE_ITEM:
                 if (object instanceof Item) {
                     Item item = (Item) object;
-                    ObjetoViewHolder itemViewHolder = (ObjetoViewHolder) holder;
-                    // Resta del teu codi de configuració per a ObjetoViewHolder
+                    if (item != null) {
+                        ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+                        itemViewHolder.textViewNombre.setText(item.getName());
+                        String imageUrl = obtenerUrlImagen(item.getSlug());
+
+                        if (imageUrl != null && !imageUrl.isEmpty()) {
+                            Glide.with(itemViewHolder.imageViewIcono.getContext())
+                                    .load(imageUrl)
+                                    .override(200, 200)
+                                    .centerCrop()
+                                    .into(itemViewHolder.imageViewIcono);
+                        }
+                    }
+                    break;
                 }
-                break;*/
-            default:
-                break;
         }
     }
 
@@ -134,9 +163,9 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         Object object = listPreferits.get(position);
         if (object instanceof Personaje) {
             return TYPE_PERSONATGE;
-        } /*else if (object instanceof Item) {
+        } else if (object instanceof Item) {
             return TYPE_ITEM;
-        }*/
+        }
         return -1;
     }
 
