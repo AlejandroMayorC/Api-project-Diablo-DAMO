@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Api project Diablo DAMO</string>
+
+        <!-- Otras strings y recursos -->
+        <string-array name="spinner_options">
+            <item>Tots</item>
+            <item>Consumibles</item>
+            <item>Botes</item>
+            <item>Pantalons</item>
+            <item>Guants</item>
+            <item>Pitxeres</item>
+            <item>Hombreres</item>
+            <item>Cascos</item>
+            <item>Vares</item>
+            <item>Dagues</item>
+            <item>Destrals (1 mà)</item>
+            <item>Espases (1 mà)</item>
+            <item>Maces (2 mans)</item>
+            <item>Destrals(2 mans)</item>
+            <item>Espases (2 mans)</item>
+        </string-array>
+
 </resources>

@@ -1,66 +1,48 @@
 package com.example.apiprojectdiablodamo.API;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.apiprojectdiablodamo.R;
-import com.example.apiprojectdiablodamo.ui.PreferitsListManager;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
     private List<Item> listaItems;
-    private final Context context;
-    private FirebaseFirestore mFirestore;
+    private List<Item> listaItemsOriginal;
 
-    public ItemAdapter(List<Item> listaItems, Context context) {
+    public ItemAdapter(List<Item> listaItems) {
         this.listaItems = listaItems;
-        this.context=context;
+        this.listaItemsOriginal = new ArrayList<>(this.listaItems);
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewNombre;
         public ImageView imageViewIcono;
-        public ImageButton Btn_preferits_character;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             textViewNombre = itemView.findViewById(R.id.textViewNombre);
             imageViewIcono = itemView.findViewById(R.id.imageViewIcono);
-            Btn_preferits_character = itemView.findViewById(R.id.Btn_preferits_character);
         }
     }
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_info, parent, false);
-        mFirestore = FirebaseFirestore.getInstance();
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_for_recyclers, parent, false);
         return new ItemViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         Item item = listaItems.get(position);
-        comprovacioEsPreferitDB(item, holder);
         if (item != null) {
             holder.textViewNombre.setText(item.getName());
             String imageUrl = obtenerUrlImagen(item.getSlug());
@@ -79,27 +61,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 intent.putExtra("itemJson", itemJson);
                 v.getContext().startActivity(intent);
             });
-
-            // Configuració visual basada en l'estat de preferit de l'item
-            if (item.getPreferit()) {
-                holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
-            } else {
-                holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
-            }
-
-            holder.Btn_preferits_character.setOnClickListener(v -> {
-                item.setPreferit(!item.getPreferit());
-
-                if (item.getPreferit()) {
-                    PreferitsListManager.getInstance().afegirPreferit(item);
-                    putClassDB(item, holder);
-                    holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
-                } else {
-                    PreferitsListManager.getInstance().eliminarPreferit(item);
-                    deleteClassDB(item, holder);
-                    holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
-                }
-            });
         }
     }
 
@@ -109,10 +70,40 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     }
 
     public void actualizarListaItems(List<Item> nuevaLista) {
+        if (nuevaLista == null) {
+            nuevaLista = new ArrayList<>(); // Crear una lista vacía si es nula
+        }
         listaItems.clear();
         listaItems.addAll(nuevaLista);
         notifyDataSetChanged();
     }
+
+    public void filtrarPorCategoria(String categoria) {
+        if (categoria.equals("Tots")) {
+            actualizarListaItems(listaItemsOriginal);
+            return;
+        }
+        List<Item> itemsFiltrados = new ArrayList<>();
+        for (Item item : listaItemsOriginal) {
+            if (categoriaCorresponde(item, categoria)) {
+                itemsFiltrados.add(item);
+            }
+        }
+        actualizarListaItems(itemsFiltrados);
+    }
+
+    private boolean categoriaCorresponde(Item item, String categoria) {
+        // Ejemplo de cómo determinar si un ítem corresponde a una categoría
+        switch (categoria) {
+            case "Consumibles":
+                return item.getSlug().contains("potion");
+            case "Botes":
+                return item.getSlug().contains("boots");
+            // Agregar más casos para las demás categorías
+        }
+        return false;
+    }
+
     public static String obtenerUrlImagen(String slug) {
         switch (slug) {
             //espadas a dos manos
@@ -272,77 +263,5 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
             default: return "";
         }
-    }
-
-    private void putClassDB(Item item, ItemAdapter.ItemViewHolder holder) {
-        Map<String, Object> map = new HashMap<>();
-        String name = item.getName();
-        map.put("name", name);
-
-        mFirestore.collection("Item").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(context, "Afegit correctament", Toast.LENGTH_SHORT).show();
-                holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Error a l'afegir item", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void deleteClassDB(Item item, ItemAdapter.ItemViewHolder holder) {
-
-        mFirestore.collection("Item")
-                .whereEqualTo("name", item.getName())
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                        // Si es troba el document amb el nom del personatge, eliminar-lo
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            mFirestore.collection("Item")
-                                    .document(document.getId()) // Obté l'ID del document
-                                    .delete()
-                                    .addOnSuccessListener(aVoid -> {
-                                        // Eliminat amb èxit
-                                        Toast.makeText(context, "Personatge eliminat!", Toast.LENGTH_SHORT).show();
-                                        //holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        // Error en eliminar el document
-                                        Toast.makeText(context, "Error en eliminar el personatge", Toast.LENGTH_SHORT).show();
-                                    });
-                        }
-                    } else {
-                        // Si no es troba cap document amb aquest nom
-                        Toast.makeText(context, "No s'ha trobat el personatge", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    // Error en la consulta
-                    Toast.makeText(context, "Error en la consulta", Toast.LENGTH_SHORT).show();
-                });
-    }
-
-    private void comprovacioEsPreferitDB(Item item, ItemAdapter.ItemViewHolder holder) {
-
-        mFirestore.collection("Item")
-                .whereEqualTo("name", item.getName())
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                        item.setPreferit(true);
-                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
-                        PreferitsListManager.getInstance().afegirPreferit(item);
-                    } else {
-                        item.setPreferit(false);
-                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    // Maneig de l'error en cas que la consulta no funcioni.
-                });
     }
 }

@@ -6,6 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.SearchView;
+import android.widget.Spinner;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +20,7 @@ import com.example.apiprojectdiablodamo.API.ApiInterface;
 import com.example.apiprojectdiablodamo.API.ApiService;
 import com.example.apiprojectdiablodamo.API.Item;
 import com.example.apiprojectdiablodamo.API.ItemAdapter;
+import com.example.apiprojectdiablodamo.API.Personaje;
 import com.example.apiprojectdiablodamo.R;
 
 import java.util.ArrayList;
@@ -28,6 +34,8 @@ public class ItemsFragment extends Fragment {
     private RecyclerView recyclerView;
     private ItemAdapter adapter;
     private List<Item> listaItems = new ArrayList<>();
+    private List<Item> listaItemsOriginal = new ArrayList<>();
+    private Spinner spinnerOptions;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,12 +45,73 @@ public class ItemsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ItemAdapter(listaItems, getContext());
         recyclerView.setAdapter(adapter);
+        spinnerOptions = view.findViewById(R.id.spinnerOptions);
+        SearchView searchViewItems = view.findViewById(R.id.searchViewItems);
+        // Configurado el Spinner con las opciones
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.spinner_options, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerOptions.setAdapter(spinnerAdapter);
+        spinnerOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!listaItemsOriginal.isEmpty()) {
+                    String selectedCategory = parent.getItemAtPosition(position).toString();
+                    adapter.filtrarPorCategoria(selectedCategory);
+                }
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Opcionalmente, manejar el caso en que no se selecciona nada
+            }
+        });
+        // Configurado el SearchView
+        searchViewItems.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                buscarItems(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()) {
+                    // Si el texto de búsqueda está vacío, muestra la lista completa
+                    adapter.actualizarListaItems(listaItemsOriginal);
+                } else {
+                    buscarItems(newText);
+                }
+                return false;
+            }
+        });
         cargarItems();
         return view;
     }
 
+    private void buscarItems(String textoBusqueda) {
+        if (textoBusqueda != null && !textoBusqueda.isEmpty()) {
+            List<Item> listaFiltrada = new ArrayList<>();
+            for (Item item : listaItemsOriginal) {
+                if (item.getName().toLowerCase().contains(textoBusqueda.toLowerCase())) {
+                    listaFiltrada.add(item);
+                }
+            }
+            adapter.actualizarListaItems(listaFiltrada);
+        } else {
+            adapter.actualizarListaItems(listaItemsOriginal);
+        }
+    }
+
     private void cargarItems() {
+        if (!listaItemsOriginal.isEmpty()) {
+            // La lista ya está cargada, no es necesario volver a cargarla
+            return;
+        }
+        if (!listaItems.isEmpty()) {
+            // La lista ya está cargada, no es necesario volver a cargarla
+            return;
+        }
         String clientId = "0cd1b84e2eb34dcf89f6731e1282f74e";
         String clientSecret = "6MKHGsFhv8dU9lE3jvL9z2aUhpGsmbwW";
         String credentials = clientId + ":" + clientSecret;
@@ -78,10 +147,17 @@ public class ItemsFragment extends Fragment {
                 @Override
                 public void onResponse(Call<Item> call, Response<Item> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        listaItems.add(response.body());
-                        adapter.notifyDataSetChanged();
+                        // Verificar que el Fragment está agregado y el Activity no es nulo
+                        if (isAdded() && getActivity() != null) {
+                            getActivity().runOnUiThread(() -> {
+                                // Actualizar la UI aquí
+                                listaItemsOriginal.add(response.body()); // Añadir a lista original
+                                listaItems.add(response.body()); // Añadir a lista usada por el adapter
+                                adapter.notifyDataSetChanged();
+                            });
+                        }
                     } else {
-                        Log.e("API Error", "Error al cargar item: " + response.code());
+                        Log.e("API Error", "Código de error: " + response.code());
                     }
                 }
 
