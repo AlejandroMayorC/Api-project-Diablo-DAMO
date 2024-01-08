@@ -119,35 +119,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         notifyDataSetChanged();
     }
 
-    public void filtrarPorCategoria(String categoria) {
-        if (categoria.equals("Tots")) {
-            actualizarListaItems(listaItemsOriginal);
-            return;
-        }
-        List<Item> itemsFiltrados = new ArrayList<>();
-        for (Item item : listaItemsOriginal) {
-            if (categoriaCorresponde(item, categoria)) {
-                itemsFiltrados.add(item);
-            }
-        }
-        actualizarListaItems(itemsFiltrados);
-    }
-
-    private boolean categoriaCorresponde(Item item, String categoria) {
-        // Ejemplo de cómo determinar si un ítem corresponde a una categoría
-        switch (categoria) {
-            case "Consumibles":
-                return item.getSlug().contains("potion");
-            case "Botes":
-                return item.getSlug().contains("boots");
-            // Agregar más casos para las demás categorías
-        }
-        return false;
-    }
-
     public static String obtenerUrlImagen(String slug) {
         switch (slug) {
-            //espadas a dos manos
+            //espases (2 mans)
             case "the-zweihander": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_sword_2h_002_x1_demonhunter_male.png";
             case "corrupted-ashbringer": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_sword_2h_104_x1_demonhunter_male.png";
             case "scourge": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_sword_2h_004_x1_demonhunter_male.png";
@@ -158,7 +132,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             case "warmonger": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_sword_2h_003_x1_demonhunter_male.png";
             case "cams-rebuttal": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_sword_2h_102_x1_demonhunter_male.png";
             case "blood-brother": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_sword_2h_103_x1_demonhunter_male.png";
-            //hachas a dos manos
+            //destrals (2  mans)
             case "sungjaes-fury": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/transmogaxe_241_004_demonhunter_male.png";
             case "kanais-skorn": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/transmogaxe_241_003_demonhunter_male.png";
             case "burst-of-wrath": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_axe_2h_103_x1_demonhunter_male.png";
@@ -169,7 +143,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             case "the-executioner": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p66_unique_axe_2h_003_demonhunter_male.png";
             case "parashu": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/axe_2h_104_demonhunter_male.png";
             case "ripper-axe": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/axe_2h_203_demonhunter_male.png";
-            //mazas a dos manos
+            //maces (2 mans)
             case "arthefs-spark-of-life": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_mace_2h_003_x1_demonhunter_male.png";
             case "crushbane": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_mace_2h_001_x1_demonhunter_male.png";
             case "soulsmasher": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_mace_2h_104_x1_demonhunter_male.png";
@@ -180,7 +154,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             case "war-maul": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/mace_2h_204_demonhunter_male.png";
             case "schaefers-hammer": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_mace_2h_009_p2_demonhunter_male.png";
             case "royal-mace": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/mace_2h_301_demonhunter_male.png";
-            //espadas a una mano
+            //espades (1 mà)
             case "ghoul-kings-blade": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/transmogsword_241_003_demonhunter_male.png";
             case "god-butcher": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/transmogsword_241_001_demonhunter_male.png";
             case "quinquennial-sword": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/transmogsword_241_004_demonhunter_male.png";
@@ -192,7 +166,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             case "doombringer": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_sword_1h_014_x1_demonhunter_male.png";
             case "spectrum": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_sword_1h_021_x1_demonhunter_male.png";
             case "thunderfury-blessed-blade-of-the-windseeker": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_sword_1h_101_x1_demonhunter_male.png";
-            //hachas a una mano
+            //Destrals (1 mà)
             case "aidans-revenge": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/transmogaxe_241_001_demonhunter_male.png";
             case "genzaniku": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_axe_1h_003_x1_demonhunter_male.png";
             case "marauder-axe": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/axe_1h_006_demonhunter_male.png";
@@ -202,7 +176,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             case "mordullus-promise": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p4_unique_axe_1h_102_demonhunter_male.png";
             case "the-burning-axe-of-sankis": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_axe_1h_007_x1_demonhunter_male.png";
             case "sky-splitter": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_axe_1h_005_p2_demonhunter_male.png";
-            //dagas
+            //dagues
             case "simple-dagger": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/dagger_001_demonhunter_male.png";
             case "envious-blade": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_dagger_103_x1_demonhunter_male.png";
             case "pig-sticker": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_dagger_007_x1_demonhunter_male.png";
@@ -211,7 +185,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             case "karleis-point": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p61_unique_dagger_101_x1_demonhunter_male.png";
             case "eunjangdo": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_dagger_104_x1_demonhunter_male.png";
             case "lord-greenstones-fan": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p61_unique_dagger_102_x1_demonhunter_male.png";
-            //baras
+            //vares
             case "the-reapers-kiss": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/transmogstaff_241_001_demonhunter_male.png";
             case "staff-of-chiroptera": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p61_unique_staff_001_demonhunter_male.png";
             case "long-staff": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/staff_002_demonhunter_male.png";
@@ -233,7 +207,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             case "warhelm-of-kassar": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p4_unique_helm_102_demonhunter_male.png";
             case "visage-of-gunes": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p4_unique_helm_103_demonhunter_male.png";
             case "mask-of-scarlet-death": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p6_necro_unique_helm_21_demonhunter_male.png";
-            //Hombreras
+            //Hombreres
             case "mystery-shoulders": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/ph_shoulders_demonhunter_male.png";
             case "star-pauldrons": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/transmogshoulders_001_demonhunter_male.png";
             case "leather-mantle": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/shoulders_002_demonhunter_male.png";
@@ -244,7 +218,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             case "mantle-of-channeling": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p4_unique_shoulder_103_demonhunter_male.png";
             case "spaulders-of-zakara": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_shoulder_102_x1_demonhunter_male.png";
             case "inariuss-martyrdom": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p6_necro_set_3_shoulders_demonhunter_male.png";
-            //pecheras
+            //pitxeres
             case "requiem-cereplate": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p6_necro_unique_chest_22_demonhunter_male.png";
             case "inariuss-conviction": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p6_necro_set_3_chest_demonhunter_male.png";
             case "pestilence-robe": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p6_necro_set_4_chest_demonhunter_male.png";
@@ -255,7 +229,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             case "mundunugus-robe": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p68_unique_chest_set_04_demonhunter_male.png";
             case "typhons-thorax": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p68_unique_chest_set_03_demonhunter_male.png";
             case "brigandine-of-valor": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p67_unique_chest_set_01_demonhunter_male.png";
-            //guantes
+            //guants
             case "gloves-of-worship": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gloves_103_x1_demonhunter_male.png";
             case "grasps-of-essence": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p69_necro_unique_gloves_22_demonhunter_male.png";
             case "st-archews-gage": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gloves_101_p2_demonhunter_male.png";
@@ -266,7 +240,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             case "tal-rashas-grasp": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p2_unique_gloves_02_demonhunter_male.png";
             case "frostburn": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p41_unique_gloves_002_demonhunter_male.png";
             case "warlord-gauntlets": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/gloves_203_demonhunter_male.png";
-            //pantalones
+            //pantalons
             case "deaths-bargain": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_pants_102_x1_demonhunter_male.png";
             case "defiler-cuisses": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p7_necro_unique_pants_22_demonhunter_male.png";
             case "swamp-land-waders": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p41_unique_pants_001_demonhunter_male.png";
@@ -277,7 +251,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             case "marauders-encasement": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_pants_set_07_x1_demonhunter_male.png";
             case "unholy-plates": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_pants_set_03_p2_demonhunter_male.png";
             case "cold-cathode": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p69_unique_pants_set_06_demonhunter_male.png";
-            //botas
+            //botes
             case "mystery-boots": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/ph_boots_demonhunter_male.png";
             case "lut-socks": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_boots_009_x1_demonhunter_male.png";
             case "the-crudest-boots": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_boots_010_x1_demonhunter_male.png";

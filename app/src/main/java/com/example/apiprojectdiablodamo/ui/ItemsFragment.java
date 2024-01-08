@@ -24,6 +24,7 @@ import com.example.apiprojectdiablodamo.API.Personaje;
 import com.example.apiprojectdiablodamo.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -36,6 +37,7 @@ public class ItemsFragment extends Fragment {
     private List<Item> listaItems = new ArrayList<>();
     private List<Item> listaItemsOriginal = new ArrayList<>();
     private Spinner spinnerOptions;
+    private SearchView searchViewItems;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class ItemsFragment extends Fragment {
         adapter = new ItemAdapter(listaItems, getContext());
         recyclerView.setAdapter(adapter);
         spinnerOptions = view.findViewById(R.id.spinnerOptions);
-        SearchView searchViewItems = view.findViewById(R.id.searchViewItems);
+        searchViewItems = view.findViewById(R.id.searchViewItems);
         // Configurado el Spinner con las opciones
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.spinner_options, android.R.layout.simple_spinner_item);
@@ -57,7 +59,7 @@ public class ItemsFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (!listaItemsOriginal.isEmpty()) {
                     String selectedCategory = parent.getItemAtPosition(position).toString();
-                    adapter.filtrarPorCategoria(selectedCategory);
+                    filtrarPorCategoria(selectedCategory);
                 }
             }
 
@@ -88,6 +90,84 @@ public class ItemsFragment extends Fragment {
         cargarItems();
         return view;
     }
+
+    private void filtrarPorCategoria(String categoria) {
+        List<Item> listaFiltrada = new ArrayList<>();
+        if (categoria.equals("Tots")) {
+            listaFiltrada.addAll(listaItemsOriginal);
+        } else {
+            for (Item item : listaItemsOriginal) {
+                if (categoriaCorresponde(item, categoria)) {
+                    listaFiltrada.add(item);
+                }
+            }
+        }
+        adapter.actualizarListaItems(listaFiltrada);
+    }
+
+    private boolean categoriaCorresponde(Item item, String categoria) {
+        //cómo determinar si un ítem corresponde a una categoría
+        switch (categoria) {
+            case "Consumibles":
+                return item.getSlug().contains("potion");
+            case "Botes":
+                return Arrays.asList("mystery-boots", "lut-socks", "the-crudest-boots", "rivera-dancers", "illusory-boots", "boots-of-disregard", "irontoe-mudsputters", "bryners-journey", "fire-walkers", "nilfurs-boast-P61_Unique_Boots_01").contains(item.getSlug());
+            case "Pantalons":
+                return Arrays.asList("cold-cathode-trousers", "unholy-plates", "marauders-encasement", "leg-guards-of-mystery", "arachyrs-legs", "sunwukos-leggings", "renewal-of-the-invoker", "swamp-land-waders", "defiler-cuisses", "deaths-bargain").contains(item.getSlug());
+            case "Guants":
+                return Arrays.asList("warlord-gauntlets", "frostburn", "tal-rashas-grasp", "manifers", "gladiator-gauntlets", "moribund-gauntlets", "st-archews-gage", "grasps-of-essence", "gloves-of-worship").contains(item.getSlug());
+            case "Pitxeres":
+                return Arrays.asList("brigandine-of-valor", "typhons-thorax", "mundunugus-robe", "helltooth-tunic", "arachyrs-carapace", "tragouls-scales", "rathmas-ribcage-plate", "pestilence-robe", "inariuss-conviction", "requiem-cereplate").contains(item.getSlug());
+            case "Hombreres":
+                return Arrays.asList("inariuss-martyrdom", "spaulders-of-zakara", "mantle-of-channeling", "lefebvres-soliloquy", "corpsewhisper-pauldrons", "razeths-volition", "pauldrons-of-the-skeleton-king", "leather-mantle", "star-pauldrons", "mystery-shoulders").contains(item.getSlug());
+            case "Cascos":
+                return Arrays.asList("mystery-helm", "helm-of-the-cranial-crustacean", "star-helm", "prides-fall", "broken-crown", "blind-faith", "deathseers-cowl", "warhelm-of-kassar", "visage-of-gunes", "mask-of-scarlet-death").contains(item.getSlug());
+            case "Vares":
+                return Arrays.asList("the-reapers-kiss", "staff-of-chiroptera", "long-staff", "yew-staff", "the-broken-staff", "war-staff", "the-smoldering-core", "suwong-diviner", "ahavarion-spear-of-lycander", "valtheks-rebuke").contains(item.getSlug());
+            case "Dagues":
+                return Arrays.asList("simple-dagger", "envious-blade", "pig-sticker", "the-horadric-hamburger", "wizardspike", "karleis-point", "eunjangdo", "lord-greenstones-fan").contains(item.getSlug());
+            case "Destrals (1 mà)":
+                return Arrays.asList("aidans-revenge", "genzaniku", "marauder-axe", "flesh-tearer", "hack", "the-butchers-sickle", "mordullus-promise", "the-burning-axe-of-sankis", "sky-splitter").contains(item.getSlug());
+            case "Espases (1 mà)":
+                return Arrays.asList("ghoul-kings-blade", "god-butcher", "quinquennial-sword", "amberwing", "monster-hunter", "wildwood", "rakanishus-blade", "the-ancient-bonesaber-of-zumakalis", "doombringer", "spectrum", "thunderfury-blessed-blade-of-the-windseeker").contains(item.getSlug());
+            case "Espases (2 mans)":
+                return item.getSlug().equals("the-zweihander") ||
+                        item.getSlug().equals("corrupted-ashbringer") ||
+                        item.getSlug().equals("scourge") ||
+                        item.getSlug().equals("blackguard") ||
+                        item.getSlug().equals("the-sultan-of-blinding-sand") ||
+                        item.getSlug().equals("blade-of-prophecy") ||
+                        item.getSlug().equals("maximus") ||
+                        item.getSlug().equals("warmonger") ||
+                        item.getSlug().equals("cams-rebuttal") ||
+                        item.getSlug().equals("blood-brother");
+            case "Destrals (2 mans)":
+                return item.getSlug().equals("sungjaes-fury") ||
+                        item.getSlug().equals("kanais-skorn") ||
+                        item.getSlug().equals("burst-of-wrath") ||
+                        item.getSlug().equals("messerschmidts-reaver") ||
+                        item.getSlug().equals("skorn") ||
+                        item.getSlug().equals("decapitator") ||
+                        item.getSlug().equals("king-maker") ||
+                        item.getSlug().equals("the-executioner") ||
+                        item.getSlug().equals("parashu") ||
+                        item.getSlug().equals("ripper-axe");
+            case "Maces (2 mans)":
+                return item.getSlug().equals("arthefs-spark-of-life") ||
+                        item.getSlug().equals("crushbane") ||
+                        item.getSlug().equals("soulsmasher") ||
+                        item.getSlug().equals("skywarden") ||
+                        item.getSlug().equals("wrath-of-the-bone-king") ||
+                        item.getSlug().equals("the-furnace") ||
+                        item.getSlug().equals("rock-breaker") ||
+                        item.getSlug().equals("war-maul") ||
+                        item.getSlug().equals("schaefers-hammer") ||
+                        item.getSlug().equals("royal-mace");
+        }
+        return false;
+    }
+
+
 
     private void buscarItems(String textoBusqueda) {
         if (textoBusqueda != null && !textoBusqueda.isEmpty()) {
@@ -168,4 +248,5 @@ public class ItemsFragment extends Fragment {
             });
         }
     }
+
 }
