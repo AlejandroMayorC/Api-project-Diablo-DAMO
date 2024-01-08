@@ -38,6 +38,8 @@ public class ItemsFragment extends Fragment {
     private List<Item> listaItemsOriginal = new ArrayList<>();
     private Spinner spinnerOptions;
     private SearchView searchViewItems;
+    private String categoriaActual = "Tots"; // Por defecto
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,8 +60,8 @@ public class ItemsFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (!listaItemsOriginal.isEmpty()) {
-                    String selectedCategory = parent.getItemAtPosition(position).toString();
-                    filtrarPorCategoria(selectedCategory);
+                    categoriaActual = parent.getItemAtPosition(position).toString();
+                    filtrarPorCategoria(categoriaActual);
                 }
             }
 
@@ -79,8 +81,8 @@ public class ItemsFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.isEmpty()) {
-                    // Si el texto de búsqueda está vacío, muestra la lista completa
-                    adapter.actualizarListaItems(listaItemsOriginal);
+                    // Si el texto de búsqueda está vacío, muestra la lista completa de la categoría
+                    filtrarPorCategoria(categoriaActual);
                 } else {
                     buscarItems(newText);
                 }
@@ -168,20 +170,16 @@ public class ItemsFragment extends Fragment {
     }
 
 
-
     private void buscarItems(String textoBusqueda) {
-        if (textoBusqueda != null && !textoBusqueda.isEmpty()) {
-            List<Item> listaFiltrada = new ArrayList<>();
-            for (Item item : listaItemsOriginal) {
-                if (item.getName().toLowerCase().contains(textoBusqueda.toLowerCase())) {
-                    listaFiltrada.add(item);
-                }
+        List<Item> listaFiltrada = new ArrayList<>();
+        for (Item item : listaItemsOriginal) {
+            if (item.getName().toLowerCase().contains(textoBusqueda.toLowerCase()) && categoriaCorresponde(item, categoriaActual)) {
+                listaFiltrada.add(item);
             }
-            adapter.actualizarListaItems(listaFiltrada);
-        } else {
-            adapter.actualizarListaItems(listaItemsOriginal);
         }
+        adapter.actualizarListaItems(listaFiltrada);
     }
+
 
     private void cargarItems() {
         if (!listaItemsOriginal.isEmpty()) {
