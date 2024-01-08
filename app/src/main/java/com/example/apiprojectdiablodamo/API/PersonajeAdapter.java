@@ -2,6 +2,7 @@ package com.example.apiprojectdiablodamo.API;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 
@@ -36,6 +38,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
     private OnPersonajeClickListener listener;
     private OnFavoriteClicked listenerFav;
     private FirebaseFirestore mFirestore;
+    private boolean alreadyChecked = false;
 
     public PersonajeAdapter(List<Personaje> listaPersonajes, Context context) {
         this.listaPersonajes = listaPersonajes;
@@ -67,7 +70,9 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
     public PersonajeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_for_recyclers, parent, false);
         mFirestore = FirebaseFirestore.getInstance();
-        return new PersonajeViewHolder(view);
+        //comprovacioEsPreferitDB();
+        PersonajeViewHolder holder = new PersonajeViewHolder(view);
+        return holder;
     }
 
 
@@ -78,6 +83,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
     @Override
     public void onBindViewHolder(PersonajeViewHolder holder, int position) {
         Personaje personaje = listaPersonajes.get(position);
+        comprovacioEsPreferitDB(personaje, holder);
         if (personaje != null) {
             holder.textViewNombre.setText(personaje.getName());
             String imageUrl = obtenerUrlImagen(personaje.getSlug());
@@ -104,41 +110,27 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
             });
 
             // Configuració visual basada en l'estat de preferit del personatge
-            /*if (PreferitsListManager.getInstance().esPreferit(personaje.getName())) {
+            if (personaje.getPreferit()) {
                 holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
             } else {
                 holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
-            }*/
-
-            //Afegir com a preferit si personatge és a la DB Firebase
-            mFirestore.collection("Preferits")
-                    .whereEqualTo("name", personaje.getName())
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                            // El personatge és a la base de dades, i s'actualitza el ImageButton.
-                            holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
-                        } else {
-                            // El personatge no és a la base de dades, no és un preferit.
-                            holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        // Maneig de l'error en cas que la consulta no funcioni.
-                    });
+            }
 
             holder.Btn_preferits_character.setOnClickListener(v -> {
                 personaje.setPreferit(!personaje.getPreferit());
+
                 if (personaje.getPreferit()) {
                     PreferitsListManager.getInstance().afegirPreferit(personaje);
-                    putClassDB(personaje);
+                    putClassDB(personaje, holder);
+                    holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
                 } else {
                     PreferitsListManager.getInstance().eliminarPreferit(personaje);
-                    //Eliminar personatge de la DB Firebase
+                    deleteClassDB(personaje, holder);
+                    holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
                 }
-
-                notifyDataSetChanged();
             });
+
+
         }
 
     }
@@ -155,7 +147,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
         }
     }
 
-    private void putClassDB(Personaje personaje) {
+    private void putClassDB(Personaje personaje, PersonajeViewHolder holder) {
         Map<String, Object> map = new HashMap<>();
         String name = personaje.getName();
         map.put("name", name);
@@ -177,14 +169,11 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
         }
         map.put("habilitats_passives", habilitatsPassives);
 
-        // Ara tens tota la informació del personatge dins del mapPersonaje
-
-        // Fer el que vulguis amb aquest map, com afegir-ho a Firestore, per exemple.
-        // mFirestore.collection("Personajes").add(mapPersonaje)...
         mFirestore.collection("Preferits").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 Toast.makeText(context, "Afegit correctament", Toast.LENGTH_SHORT).show();
+                holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -194,8 +183,57 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
         });
     }
 
-    private void deleteClassDB(Personaje personaje) {
+    private void deleteClassDB(Personaje personaje, PersonajeViewHolder holder) {
 
+        mFirestore.collection("Preferits")
+                .whereEqualTo("name", personaje.getName())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        // Si es troba el document amb el nom del personatge, eliminar-lo
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            mFirestore.collection("Preferits")
+                                    .document(document.getId()) // Obté l'ID del document
+                                    .delete()
+                                    .addOnSuccessListener(aVoid -> {
+                                        // Eliminat amb èxit
+                                        Toast.makeText(context, "Personatge eliminat!", Toast.LENGTH_SHORT).show();
+                                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        // Error en eliminar el document
+                                        Toast.makeText(context, "Error en eliminar el personatge", Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+                    } else {
+                        // Si no es troba cap document amb aquest nom
+                        Toast.makeText(context, "No s'ha trobat el personatge", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Error en la consulta
+                    Toast.makeText(context, "Error en la consulta", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void comprovacioEsPreferitDB(Personaje personaje, PersonajeViewHolder holder) {
+
+        mFirestore.collection("Preferits")
+                .whereEqualTo("name", personaje.getName())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        personaje.setPreferit(true);
+                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
+                        PreferitsListManager.getInstance().afegirPreferit(personaje);
+                    } else {
+                        personaje.setPreferit(false);
+                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Maneig de l'error en cas que la consulta no funcioni.
+                });
     }
     
     @Override

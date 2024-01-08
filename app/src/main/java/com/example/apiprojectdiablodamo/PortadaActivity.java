@@ -1,7 +1,6 @@
 package com.example.apiprojectdiablodamo;
 
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.apiprojectdiablodamo.API.ApiActivity;
 
 import android.content.Intent;
 import android.os.Bundle;

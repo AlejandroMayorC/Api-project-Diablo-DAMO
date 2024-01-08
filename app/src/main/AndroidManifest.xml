@@ -34,6 +34,7 @@
             android:name=".API.ApiActivity"
             android:exported="true" />
         <activity android:name=".API.DetallePersonajeActivity"/>
+        <activity android:name=".API.DetalleItemActivity"/>
     </application>
 
 </manifest>

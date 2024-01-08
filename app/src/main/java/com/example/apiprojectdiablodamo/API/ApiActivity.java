@@ -26,7 +26,7 @@ public class ApiActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_segona);
         viewModel = new ViewModelProvider(this).get(DataViewModel.class);
-        recyclerView = findViewById(R.id.recyclerViewPersonajes);
+        /*recyclerView = findViewById(R.id.recyclerViewPersonajes);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PersonajeAdapter(listaPersonajes, getApplicationContext());
         recyclerView.setAdapter(adapter);
@@ -35,7 +35,7 @@ public class ApiActivity extends AppCompatActivity {
             Intent intent = new Intent(this, DetallePersonajeActivity.class);
             intent.putExtra("JSON_PERSONAJE", new Gson().toJson(personaje));
             startActivity(intent);
-        });
+        });*/
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(item -> {
