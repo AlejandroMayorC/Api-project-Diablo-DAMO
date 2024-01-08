@@ -6,7 +6,7 @@
     <item
         android:id="@+id/navigation_api2"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="API 2" />
+        android:title="Items" />
     <item
         android:id="@+id/navigation_api3"
         android:icon="@drawable/ic_dashboard_black_24dp"
@@ -14,5 +14,5 @@
     <item
         android:id="@+id/navigation_favoritos"
         android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="Favoritos" />
+        android:title="Preferits" />
 </menu>
