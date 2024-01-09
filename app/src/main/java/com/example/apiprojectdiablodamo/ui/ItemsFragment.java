@@ -93,7 +93,7 @@ public class ItemsFragment extends Fragment {
                 return false;
             }
         });
-        cargarItems();
+        //cargarItems();
         return view;
     }
 
@@ -259,5 +259,27 @@ public class ItemsFragment extends Fragment {
         super.onStop();
         executorService.shutdownNow(); // Asegurarse de apagar el servicio al detener el fragmento
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarItems(); // Recargar los datos cuando el Fragment se reanuda
+
+        // Restablecer la lista completa en el adapter
+        if (listaItemsOriginal != null) {
+            listaItems.clear();
+            listaItems.addAll(listaItemsOriginal);
+            adapter.actualizarListaItems(listaItemsOriginal);
+        }
+        // Restablecer el filtro de categoría y búsqueda
+        filtrarPorCategoria(categoriaActual);
+        if (searchViewItems != null) {
+            CharSequence query = searchViewItems.getQuery();
+            if (query != null && !query.toString().isEmpty()) {
+                buscarItems(query.toString());
+            }
+        }
+    }
+
 
 }
