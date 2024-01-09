@@ -37,9 +37,8 @@ public class GemsFragment extends Fragment {
     private ItemAdapter adapter;
     private List<Item> listaItems = new ArrayList<>();
     private List<Item> listaItemsOriginal = new ArrayList<>();
-    private Spinner spinnerOptions;
     private SearchView searchViewItems;
-    private String categoriaActual = "Tots"; // Por defecto
+    private String categoriaActual = "Tots";
     private ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 

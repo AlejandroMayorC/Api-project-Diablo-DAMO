@@ -1,12 +1,7 @@
 package com.example.apiprojectdiablodamo.ui;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Base64;
@@ -14,9 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -26,12 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.apiprojectdiablodamo.API.AccessTokenResponse;
 import com.example.apiprojectdiablodamo.API.ApiInterface;
 import com.example.apiprojectdiablodamo.API.ApiService;
-import com.example.apiprojectdiablodamo.API.DetallePersonajeActivity;
 import com.example.apiprojectdiablodamo.API.Personaje;
 import com.example.apiprojectdiablodamo.API.PersonajeAdapter;
 import com.example.apiprojectdiablodamo.API.PersonajeManager;
 import com.example.apiprojectdiablodamo.R;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,12 +56,12 @@ public class CharacterFragment extends Fragment {
         searchView = view.findViewById(R.id.searchView);
 
         adapter.setOnPersonajeClickListener(personaje -> {
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager(); // O usa getChildFragmentManager() si estás en un Fragment
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
 
             DetallePersonajeFragment detallePersonajeFragment = DetallePersonajeFragment.newInstance(personaje);
 
-            transaction.replace(R.id.fragment_container, detallePersonajeFragment); // Reemplaza 'R.id.tu_contenedor_fragment' con el ID de tu contenedor
+            transaction.replace(R.id.fragment_container, detallePersonajeFragment);
             transaction.addToBackStack(null); // Permite que el botón de atrás revierta la transacción
             transaction.commit();
         });
@@ -100,7 +91,7 @@ public class CharacterFragment extends Fragment {
     public void onResume() {
         super.onResume();
         cargarPersonajes(); // Recargar los datos cuando el Fragment se reanuda
-        // Restablecer la lista completa en el adapter
+        // Restablece la lista completa en el adapter
         if (listaPersonajesOriginal != null) {
             listaPersonajes.clear();
             listaPersonajes.addAll(listaPersonajesOriginal);
