@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.apiprojectdiablodamo.R;
@@ -39,6 +38,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         this.context=context;
         this.listaItemsOriginal = new ArrayList<>(this.listaItems);
     }
+
+    public List<Item> getListaItems() {
+        return new ArrayList<>(listaItems);
+    }
+
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewNombre;
@@ -115,17 +119,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         if (nuevaLista == null) {
             nuevaLista = new ArrayList<>(); // Crear una lista vacía si es nula
         }
-
-        // Calcula la diferencia entre la lista antigua y la nueva
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ItemDiffCallback(this.listaItems, nuevaLista));
-
-        // Actualiza la lista actual con la nueva lista
-        this.listaItems.clear();
-        this.listaItems.addAll(nuevaLista);
-
-        // Informa al adaptador sobre los cambios en la lista, de manera eficiente
-        diffResult.dispatchUpdatesTo(this);
-        notifyDataSetChanged(); //para el searchView
+        listaItems.clear();
+        listaItems.addAll(nuevaLista);
+        notifyDataSetChanged();
     }
 
     public static String obtenerUrlImagen(String slug) {
