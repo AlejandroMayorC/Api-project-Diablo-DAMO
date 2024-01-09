@@ -53,6 +53,7 @@ public class CharacterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_character, container, false);
 
         listaPersonajes = PersonajeManager.getInstance().getPersonajes();
+        listaPersonajesOriginal = new ArrayList<>(PersonajeManager.getInstance().getPersonajes());
         recyclerView = view.findViewById(R.id.recyclerViewPersonajes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new PersonajeAdapter(listaPersonajes, getContext());
