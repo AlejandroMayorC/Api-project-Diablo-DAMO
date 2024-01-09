@@ -11,9 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.apiprojectdiablodamo.R;
+import com.example.apiprojectdiablodamo.ui.DetalleItemFragment;
 import com.example.apiprojectdiablodamo.ui.PreferitsListManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -81,10 +84,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             }
 
             holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(v.getContext(), DetalleItemActivity.class);
-                String itemJson = new Gson().toJson(item);
-                intent.putExtra("itemJson", itemJson);
-                v.getContext().startActivity(intent);
+                if (context instanceof FragmentActivity) {
+                    FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                    DetalleItemFragment detalleItemFragment = DetalleItemFragment.newInstance(item, obtenerUrlImagen(item.getSlug()));
+
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, detalleItemFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
             });
 
             // Configuració visual basada en l'estat de preferit de l'item
@@ -280,6 +288,26 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             case "bottomless-potion-of-amplification": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/healthpotionlegendary_09_demonhunter_male.png";
             case "bottomless-potion-of-the-unfettered": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/healthpotionlegendary_11_demonhunter_male.png";
             case "bottomless-potion-of-kulleaid": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/healthpotionlegendary_06_demonhunter_male.png";
+            //gems
+            case "whisper-of-atonement": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/p73_unique_gem_128_demonhunter_male.png";
+            case "legacy-of-dreams": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_023_x1_ptr_demonhunter_male.png";
+            case "bane-of-the-powerful": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_001_x1_ptr_demonhunter_male.png";
+            case "wreath-of-lightning": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_004_x1_demonhunter_male.png";
+            case "taeguk": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_015_x1_ptr_demonhunter_male.png";
+            case "gem-of-efficacious-toxin": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_005_x1_demonhunter_male.png";
+            case "mutilation-guard": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_019_x1_ptr_demonhunter_male.png";
+            case "bane-of-the-trapped": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_002_x1_ptr_demonhunter_male.png";
+            case "boyarskys-chip": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_020_x1_demonhunter_male.png";
+            case "invigorating-gemstone": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_009_x1_ptr_demonhunter_male.png";
+            case "boon-of-the-hoarder": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_014_x1_ptr_demonhunter_male.png";
+            case "bane-of-the-stricken": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_018_x1_demonhunter_male.png";
+            case "molten-wildebeests-gizzard": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_017_x1_ptr_demonhunter_male.png";
+            case "red-soul-shard": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_022_x1_ptr_demonhunter_male.png";
+            case "esoteric-alteration": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_016_x1_ptr_demonhunter_male.png";
+            case "simplicitys-strength": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_013_x1_demonhunter_male.png";
+            case "mirinae-teardrop-of-the-starweaver": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_007_x1_ptr_demonhunter_male.png";
+            case "iceblink": return "https://assets.diablo3.blizzard.com/d3/icons/items/large/unique_gem_021_x1_ptr_demonhunter_male.png";
+
 
             default: return "";
         }

@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/navigation_api3"
-        android:name="com.example.apiprojectdiablodamo.ui.CraftFragment"
+        android:name="com.example.apiprojectdiablodamo.ui.GemsFragment"
         android:label="API 3"
-        tools:layout="@layout/fragment_craft" />
+        tools:layout="@layout/fragment_gems" />
 
     <fragment
         android:id="@+id/navigation_favoritos"

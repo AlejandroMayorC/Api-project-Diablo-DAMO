@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.apiprojectdiablodamo.ui.CharacterFragment;
-import com.example.apiprojectdiablodamo.ui.CraftFragment;
+import com.example.apiprojectdiablodamo.ui.GemsFragment;
 import com.example.apiprojectdiablodamo.ui.ItemsFragment;
 import com.example.apiprojectdiablodamo.ui.PreferitsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -32,7 +32,7 @@ public class SegonaActivity extends AppCompatActivity {
                 } else if (itemId == R.id.navigation_api2){
                     fragment = new ItemsFragment();
                 }else if (itemId == R.id.navigation_api3) {
-                    fragment = new CraftFragment();
+                    fragment = new GemsFragment();
                 } else if (itemId == R.id.navigation_favoritos) {
                     fragment = new PreferitsFragment();
                 }
