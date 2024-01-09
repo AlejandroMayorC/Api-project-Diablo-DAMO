@@ -32,6 +32,8 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,6 +44,7 @@ public class CharacterFragment extends Fragment {
     private List<Personaje> listaPersonajes = new ArrayList<>();
     private List<Personaje> listaPersonajesOriginal = new ArrayList<>();
     private List<Call> activeCalls = new ArrayList<>();
+    private ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 
 
@@ -141,45 +144,42 @@ public class CharacterFragment extends Fragment {
 
     private void obtenerPersonajes(ApiInterface apiInterface, String accessToken) {
         String[] classSlugs = {"barbarian", "wizard", "demon-hunter", "crusader", "monk", "witch-doctor", "necromancer"};
-
         for (String slug : classSlugs) {
-            Call<Personaje> callPersonaje = apiInterface.obtenerPersonaje(slug, accessToken);
-            callPersonaje.enqueue(new Callback<Personaje>() {
-                @Override
-                public void onResponse(Call<Personaje> call, Response<Personaje> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        // Verificar que el Fragment está agregado y el Activity no es nulo
-                        if (isAdded() && getActivity() != null) {
-                            getActivity().runOnUiThread(() -> {
-                                // Actualizar la UI aquí
-                                listaPersonajesOriginal.add(response.body()); // Añadir a lista original
-                                listaPersonajes.add(response.body()); // Añadir a lista usada por el adapter
-                                adapter.notifyDataSetChanged();
-                            });
+            Runnable task = () -> {
+                Call<Personaje> callPersonaje = apiInterface.obtenerPersonaje(slug, accessToken);
+                callPersonaje.enqueue(new Callback<Personaje>() {
+                    @Override
+                    public void onResponse(Call<Personaje> call, Response<Personaje> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            if (isAdded() && getActivity() != null) {
+                                getActivity().runOnUiThread(() -> {
+                                    listaPersonajesOriginal.add(response.body());
+                                    listaPersonajes.add(response.body());
+                                    adapter.notifyDataSetChanged();
+                                });
+                            }
+                        } else {
+                            Log.e("API Error", "Código de error: " + response.code());
                         }
-                    } else {
-                        Log.e("API Error", "Código de error: " + response.code());
                     }
-                }
 
-                @Override
-                public void onFailure(Call<Personaje> call, Throwable t) {
-                    Log.d("API Failure", "Error al llamar a la API", t);
-                }
-            });
-            // Añadir la llamada a una lista para poder cancelarla después si es necesario
-            activeCalls.add(callPersonaje);
+                    @Override
+                    public void onFailure(Call<Personaje> call, Throwable t) {
+                        Log.d("API Failure", "Error al llamar a la API", t);
+                    }
+                });
+                activeCalls.add(callPersonaje);
+            };
+            executorService.submit(task);
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // Cancelar todas las llamadas activas
+        executorService.shutdownNow(); // Asegurarse de apagar el servicio al detener el fragmento
         for (Call call : activeCalls) {
             call.cancel();
         }
     }
-
-
 }
