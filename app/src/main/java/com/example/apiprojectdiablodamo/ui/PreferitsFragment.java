@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.apiprojectdiablodamo.API.Item;
 import com.example.apiprojectdiablodamo.API.Personaje;
 import com.example.apiprojectdiablodamo.API.PersonajeAdapter;
 import com.example.apiprojectdiablodamo.R;
@@ -32,7 +33,7 @@ public class PreferitsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_preferits, container, false);
-        
+
         listPreferitsOriginal = PreferitsListManager.getInstance().getLlistaPreferits();
         listPreferits = new ArrayList<>(listPreferitsOriginal);
         recyclerView = view.findViewById(R.id.recyclerViewPreferits);
@@ -68,7 +69,12 @@ public class PreferitsFragment extends Fragment {
                 if (personaje.getName().toLowerCase().contains(texto.toLowerCase())) {
                     listaFiltradaTemp.add(personaje);
                 }
+            } else if (obj instanceof Item) {
+            Item item = (Item) obj;
+            if (item.getName().toLowerCase().contains(texto.toLowerCase())) {
+                listaFiltradaTemp.add(item);
             }
+        }
         }
         adapter.actualizarListaPreferits(listaFiltradaTemp); // Actualiza la lista del adaptador
     }
