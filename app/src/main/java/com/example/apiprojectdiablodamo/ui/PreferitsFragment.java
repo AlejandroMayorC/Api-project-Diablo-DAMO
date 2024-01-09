@@ -32,13 +32,16 @@ public class PreferitsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_preferits, container, false);
-
+        
         listPreferitsOriginal = PreferitsListManager.getInstance().getLlistaPreferits();
-        listPreferits = new ArrayList<>(listPreferitsOriginal); // Crear una copia para mostrar
+        listPreferits = new ArrayList<>(listPreferitsOriginal);
         recyclerView = view.findViewById(R.id.recyclerViewPreferits);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        PreferitsAdapter adapter = new PreferitsAdapter(listPreferits);
+
+        // Inicializa la variable de instancia 'adapter' en lugar de crear una nueva variable local
+        this.adapter = new PreferitsAdapter(listPreferits);
         recyclerView.setAdapter(adapter);
+
         SearchView searchViewPreferits = view.findViewById(R.id.searchViewFav);
         searchViewPreferits.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
