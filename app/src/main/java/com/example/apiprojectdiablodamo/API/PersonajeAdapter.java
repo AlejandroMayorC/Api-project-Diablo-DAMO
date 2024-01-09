@@ -167,7 +167,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
         }
         map.put("habilitats_passives", habilitatsPassives);
 
-        mFirestore.collection("Personatges").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        mFirestore.collection("Preferits").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 Toast.makeText(context, "Afegit correctament", Toast.LENGTH_SHORT).show();
@@ -183,14 +183,14 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
 
     private void deleteClassDB(Personaje personaje, PersonajeViewHolder holder) {
 
-        mFirestore.collection("Personatges")
+        mFirestore.collection("Preferits")
                 .whereEqualTo("name", personaje.getName())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
                         // Si es troba el document amb el nom del personatge, eliminar-lo
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            mFirestore.collection("Personatges")
+                            mFirestore.collection("Preferits")
                                     .document(document.getId()) // Obté l'ID del document
                                     .delete()
                                     .addOnSuccessListener(aVoid -> {
@@ -216,7 +216,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
 
     private void comprovacioEsPreferitDB(Personaje personaje, PersonajeViewHolder holder) {
         PreferitsListManager.getInstance().buidarObjecteLlistaPreferits(Personaje.class);
-        mFirestore.collection("Personatges")
+        mFirestore.collection("Preferits")
                 .whereEqualTo("name", personaje.getName())
                 .get()
                 .addOnCompleteListener(task -> {

@@ -285,7 +285,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         String name = item.getName();
         map.put("name", name);
 
-        mFirestore.collection("Item").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        mFirestore.collection("Preferits").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 Toast.makeText(context, "Afegit correctament", Toast.LENGTH_SHORT).show();
@@ -301,14 +301,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     private void deleteClassDB(Item item, ItemAdapter.ItemViewHolder holder) {
 
-        mFirestore.collection("Item")
+        mFirestore.collection("Preferits")
                 .whereEqualTo("name", item.getName())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
                         // Si es troba el document amb el nom del personatge, eliminar-lo
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            mFirestore.collection("Item")
+                            mFirestore.collection("Preferits")
                                     .document(document.getId()) // Obté l'ID del document
                                     .delete()
                                     .addOnSuccessListener(aVoid -> {

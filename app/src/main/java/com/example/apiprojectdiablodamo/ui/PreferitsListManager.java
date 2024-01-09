@@ -32,6 +32,10 @@ public class PreferitsListManager {
         }
     }
 
+    public void buidarLlistaPreferits(List<Object> llistaPreferits) {
+        llistaPreferits.clear();
+    }
+
     public void buidarObjecteLlistaPreferits(Class<?> tipusObjecte) {
         llistaPreferits.removeIf(obj -> tipusObjecte.isInstance(obj));
     }

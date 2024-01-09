@@ -71,5 +71,4 @@ public class PreferitsFragment extends Fragment {
         adapter.actualizarListaPreferits(listaFiltradaTemp); // Actualiza la lista del adaptador
     }
 
-
 }

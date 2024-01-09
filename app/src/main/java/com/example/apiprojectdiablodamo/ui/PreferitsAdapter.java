@@ -19,6 +19,7 @@ import com.example.apiprojectdiablodamo.API.ItemAdapter;
 import com.example.apiprojectdiablodamo.API.Personaje;
 import com.example.apiprojectdiablodamo.API.PersonajeAdapter;
 import com.example.apiprojectdiablodamo.R;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.List;
 public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Object> listPreferits;
+    private FirebaseFirestore mFirestore;
     private static final int TYPE_PERSONATGE = 1;
     private static final int TYPE_ITEM = 2;
 
@@ -129,6 +131,7 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
+        mFirestore = FirebaseFirestore.getInstance();
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.preferit_info_card, parent, false);
         return new ViewHolder(view, this);
         /*switch (viewType) {
@@ -252,6 +255,27 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         listPreferits.addAll(nuevaLista);
         notifyDataSetChanged();
     }
+
+    private void comprovacioEsPreferitDB(Object object, ViewHolder holder) {
+        PreferitsListManager.getInstance().buidarLlistaPreferits(listPreferits);
+        mFirestore.collection("Item")
+                .whereEqualTo("name", object.getClass().getName())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        object.getClass().setPreferit(true);
+                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
+                        PreferitsListManager.getInstance().afegirPreferit(item);
+                    } else {
+                        item.setPreferit(false);
+                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Maneig de l'error en cas que la consulta no funcioni.
+                });
+    }
+
 
     /*public class MyViewHolder extends RecyclerView.ViewHolder {
 
