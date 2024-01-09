@@ -33,7 +33,6 @@ public class Personaje implements Serializable{
         this.skills = skills;
     }
 
-
     public String getSlug() {
         return slug;
     }

@@ -215,7 +215,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
     }
 
     private void comprovacioEsPreferitDB(Personaje personaje, PersonajeViewHolder holder) {
-        PreferitsListManager.getInstance().buidarLlistaPreferits();
+        PreferitsListManager.getInstance().buidarObjecteLlistaPreferits(Personaje.class);
         mFirestore.collection("Personatges")
                 .whereEqualTo("name", personaje.getName())
                 .get()

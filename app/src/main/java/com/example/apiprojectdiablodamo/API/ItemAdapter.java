@@ -332,8 +332,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 });
     }
 
-    private void comprovacioEsPreferitDB(Item item, ItemAdapter.ItemViewHolder holder) {
-
+    /*private void comprovacioEsPreferitDB(Item item, ItemAdapter.ItemViewHolder holder) {
+        PreferitsListManager.getInstance().buidarObjecteLlistaPreferits(Personaje.class);
         mFirestore.collection("Item")
                 .whereEqualTo("name", item.getName())
                 .get()
@@ -343,6 +343,38 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                         holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
                         PreferitsListManager.getInstance().afegirPreferit(item);
                     } else {
+                        item.setPreferit(false);
+                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Maneig de l'error en cas que la consulta no funcioni.
+                });
+    }*/
+
+    private void comprovacioEsPreferitDB(Item item, ItemAdapter.ItemViewHolder holder) {
+        PreferitsListManager.getInstance().buidarObjecteLlistaPreferits(Personaje.class);
+        mFirestore.collection("Item")
+                .whereEqualTo("name", item.getName())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // Verificar si l'element està a la base de dades com a preferit
+                            Item itemFromDB = document.toObject(Item.class);
+                            if (itemFromDB != null && itemFromDB.getPreferit()) {
+                                // Si és preferit, actualitza el drawable de l'ImageButton
+                                item.setPreferit(true);
+                                holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
+                                PreferitsListManager.getInstance().afegirPreferit(item);
+                            } else {
+                                // Si no és preferit, actualitza el drawable de l'ImageButton
+                                item.setPreferit(false);
+                                holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
+                            }
+                        }
+                    } else {
+                        // Si no es troba cap document amb aquest nom
                         item.setPreferit(false);
                         holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
                     }

@@ -47,6 +47,10 @@ public class Item implements Serializable {
         this.setItems = setItems;
     }
 
+    public Item() {
+        // Pot ser buit o inicialitzar valors predeterminats si és necessari
+    }
+
     public String getId() {
         return id;
     }
@@ -151,11 +155,11 @@ public class Item implements Serializable {
         this.color = color;
     }
 
-    public boolean isSeasonRequiredToDrop() {
+    public boolean getIsSeasonRequiredToDrop() {
         return isSeasonRequiredToDrop;
     }
 
-    public void setSeasonRequiredToDrop(boolean seasonRequiredToDrop) {
+    public void setIsSeasonRequiredToDrop(boolean seasonRequiredToDrop) {
         isSeasonRequiredToDrop = seasonRequiredToDrop;
     }
 
