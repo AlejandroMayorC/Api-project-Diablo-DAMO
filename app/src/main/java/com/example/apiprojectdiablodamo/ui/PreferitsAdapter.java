@@ -55,9 +55,9 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(itemView);
             textViewNom = itemView.findViewById(R.id.textViewNom);
             imageViewIcono = itemView.findViewById(R.id.imageViewIcono);
-            Btn_preferits_character = itemView.findViewById(R.id.Btn_preferits_character);
+            //Btn_preferits_character = itemView.findViewById(R.id.Btn_preferits_character);
 
-            Btn_preferits_character.setOnClickListener(v -> {
+            /*Btn_preferits_character.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     Object preferit = adapter.listPreferits.get(position);
@@ -78,7 +78,7 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         v.getContext().startActivity(intent);
                     }
                 }
-            });
+            });*/
         }
     }
 

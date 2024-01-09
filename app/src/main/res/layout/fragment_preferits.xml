@@ -24,7 +24,8 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="PREFERITS"
-            android:textSize="24sp"
+            android:textSize="28sp"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/searchViewFav"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
