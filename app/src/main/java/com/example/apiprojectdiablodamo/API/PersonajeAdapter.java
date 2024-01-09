@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -59,8 +60,12 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
 
     // Método para actualizar la lista de personajes
     public void actualizarListaPersonajes(List<Personaje> nuevaLista) {
-        listaPersonajes.clear();
-        listaPersonajes.addAll(nuevaLista);
+        PersonajeDiffCallback diffCallback = new PersonajeDiffCallback(this.listaPersonajes, nuevaLista);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+
+        this.listaPersonajes.clear();
+        this.listaPersonajes.addAll(nuevaLista);
+        diffResult.dispatchUpdatesTo(this);
         notifyDataSetChanged();
     }
 
