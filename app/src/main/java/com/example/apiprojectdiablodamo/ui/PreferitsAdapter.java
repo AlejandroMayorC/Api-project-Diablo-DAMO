@@ -256,7 +256,7 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
-    private void comprovacioEsPreferitDB(Object object, ViewHolder holder) {
+    /*private void comprovacioEsPreferitDB(Object object, ViewHolder holder) {
         PreferitsListManager.getInstance().buidarLlistaPreferits(listPreferits);
         mFirestore.collection("Item")
                 .whereEqualTo("name", object.getClass().getName())
