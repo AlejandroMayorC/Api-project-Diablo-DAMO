@@ -17,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,12 +65,14 @@ public class CharacterFragment extends Fragment {
         searchView = view.findViewById(R.id.searchView);
 
         adapter.setOnPersonajeClickListener(personaje -> {
-            Context context = getActivity();
-            if (context != null) {
-                Intent intent = new Intent(context, DetallePersonajeActivity.class);
-                intent.putExtra("JSON_PERSONAJE", new Gson().toJson(personaje));
-                startActivity(intent);
-            }
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager(); // O usa getChildFragmentManager() si estás en un Fragment
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+            DetallePersonajeFragment detallePersonajeFragment = DetallePersonajeFragment.newInstance(personaje);
+
+            transaction.replace(R.id.fragment_container, detallePersonajeFragment); // Reemplaza 'R.id.tu_contenedor_fragment' con el ID de tu contenedor
+            transaction.addToBackStack(null); // Permite que el botón de atrás revierta la transacción
+            transaction.commit();
         });
         // Configurado el SearchView
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
