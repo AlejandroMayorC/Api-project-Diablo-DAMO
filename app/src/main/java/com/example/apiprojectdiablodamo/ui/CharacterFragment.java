@@ -44,6 +44,7 @@ public class CharacterFragment extends Fragment {
     private List<Personaje> listaPersonajes = new ArrayList<>();
     private List<Personaje> listaPersonajesOriginal = new ArrayList<>();
     private List<Call> activeCalls = new ArrayList<>();
+    private SearchView searchView;
     private ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 
@@ -53,11 +54,12 @@ public class CharacterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_character, container, false);
 
         listaPersonajes = PersonajeManager.getInstance().getPersonajes();
+        listaPersonajesOriginal = new ArrayList<>(PersonajeManager.getInstance().getPersonajes());
         recyclerView = view.findViewById(R.id.recyclerViewPersonajes);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new PersonajeAdapter(listaPersonajes, getContext());
         recyclerView.setAdapter(adapter);
-        SearchView searchView = view.findViewById(R.id.searchView);
+        searchView = view.findViewById(R.id.searchView);
 
         adapter.setOnPersonajeClickListener(personaje -> {
             Context context = getActivity();
@@ -93,6 +95,12 @@ public class CharacterFragment extends Fragment {
     public void onResume() {
         super.onResume();
         cargarPersonajes(); // Recargar los datos cuando el Fragment se reanuda
+        // Restablecer la lista completa en el adapter
+        if (listaPersonajesOriginal != null) {
+            listaPersonajes.clear();
+            listaPersonajes.addAll(listaPersonajesOriginal);
+            adapter.actualizarListaPersonajes(listaPersonajesOriginal);
+        }
     }
 
     private void buscarPersonajes(String textoBusqueda) {
@@ -140,6 +148,7 @@ public class CharacterFragment extends Fragment {
                 // Manejar el fallo en la llamada a la API
             }
         });
+
     }
 
     private void obtenerPersonajes(ApiInterface apiInterface, String accessToken) {
@@ -182,4 +191,19 @@ public class CharacterFragment extends Fragment {
             call.cancel();
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Restablece el texto del SearchView a vacío
+        if (searchView != null) {
+            searchView.setQuery("", false);
+            searchView.clearFocus();
+        }
+
+        // Restablecer la lista a su estado original
+        adapter.actualizarListaPersonajes(listaPersonajesOriginal);
+    }
+
 }

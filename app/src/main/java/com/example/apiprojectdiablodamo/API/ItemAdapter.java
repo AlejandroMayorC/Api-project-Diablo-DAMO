@@ -39,6 +39,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         this.listaItemsOriginal = new ArrayList<>(this.listaItems);
     }
 
+    public List<Item> getListaItems() {
+        return new ArrayList<>(listaItems);
+    }
+
+
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewNombre;
         public ImageView imageViewIcono;

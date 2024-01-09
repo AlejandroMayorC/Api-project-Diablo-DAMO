@@ -176,8 +176,10 @@ public class ItemsFragment extends Fragment {
 
     private void buscarItems(String textoBusqueda) {
         List<Item> listaFiltrada = new ArrayList<>();
-        for (Item item : listaItemsOriginal) {
-            if (item.getName().toLowerCase().contains(textoBusqueda.toLowerCase()) && categoriaCorresponde(item, categoriaActual)) {
+        List<Item> listaBusqueda = categoriaActual.equals("Tots") ? listaItemsOriginal : adapter.getListaItems();
+
+        for (Item item : listaBusqueda) {
+            if (item.getName().toLowerCase().contains(textoBusqueda.toLowerCase())) {
                 listaFiltrada.add(item);
             }
         }
