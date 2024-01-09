@@ -104,6 +104,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
                 intent.putExtra("imagenUrl", imageUrl); // Envía la URL de la imagen
                 v.getContext().startActivity(intent);
             });
+
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(v.getContext(), DetallePersonajeActivity.class);
                 String personajeJson = new Gson().toJson(personaje);
@@ -132,8 +133,6 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
                     holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
                 }
             });
-
-
         }
 
     }

@@ -49,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nombre del Item"
-                android:textSize="20sp"
+                android:textSize="24dp"
                 android:textStyle="bold"/>
 
 
@@ -58,70 +58,70 @@
                 android:id="@+id/textViewItemRequiredLevel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="18dp" />
 
             <!-- TextView para AccountBound -->
             <TextView
                 android:id="@+id/textViewItemAccountBound"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="20dp" />
 
             <!-- TextView para TypeName -->
             <TextView
                 android:id="@+id/textViewItemTypeName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="20dp" />
 
             <!-- TextView para Damage -->
             <TextView
                 android:id="@+id/textViewItemDamage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="20dp" />
 
             <!-- TextView para DPS -->
             <TextView
                 android:id="@+id/textViewItemDps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="20dp" />
 
             <!-- TextView para Color -->
             <TextView
                 android:id="@+id/textViewItemColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="20dp" />
 
             <!-- TextView para IsSeasonRequiredToDrop -->
             <TextView
                 android:id="@+id/textViewItemIsSeasonRequiredToDrop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="20dp" />
 
             <!-- TextView para Slots -->
             <TextView
                 android:id="@+id/textViewItemSlots"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="20dp" />
 
             <!-- TextView para ItemType TwoHanded -->
             <TextView
                 android:id="@+id/textViewItemTwoHanded"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="20dp" />
 
             <!-- TextView para ItemType ID -->
             <TextView
                 android:id="@+id/textViewItemTypeId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="20dp" />
 
         </LinearLayout>
     </ScrollView>

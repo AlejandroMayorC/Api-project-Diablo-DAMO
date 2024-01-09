@@ -2,6 +2,7 @@ package com.example.apiprojectdiablodamo.API;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,18 +35,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     private List<Item> listaItems;
     private final Context context;
     private FirebaseFirestore mFirestore;
-    private List<Item> listaItemsOriginal;
 
     public ItemAdapter(List<Item> listaItems, Context context) {
         this.listaItems = listaItems;
         this.context=context;
-        this.listaItemsOriginal = new ArrayList<>(this.listaItems);
     }
 
     public List<Item> getListaItems() {
         return new ArrayList<>(listaItems);
     }
-
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewNombre;
@@ -387,7 +385,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 });
     }*/
 
-    private void comprovacioEsPreferitDB(Item item, ItemAdapter.ItemViewHolder holder) {
+    /*private void comprovacioEsPreferitDB(Item item, ItemAdapter.ItemViewHolder holder) {
         //PreferitsListManager.getInstance().buidarObjecteLlistaPreferits(Personaje.class);
         mFirestore.collection("Item")
                 .whereEqualTo("name", item.getName())
@@ -410,6 +408,28 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                         }
                     } else {
                         // Si no es troba cap document amb aquest nom
+                        item.setPreferit(false);
+                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Maneig de l'error en cas que la consulta no funcioni.
+                });
+    }*/
+
+    private void comprovacioEsPreferitDB(Item item, ItemAdapter.ItemViewHolder holder) {
+        //PreferitsListManager.getInstance().buidarObjecteLlistaPreferits(Personaje.class);
+        mFirestore.collection("Preferits")
+                .whereEqualTo("name", item.getName())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        item.setPreferit(true);
+                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
+                        Log.d("Log.d", "Objectes llista_original abans: " + PreferitsListManager.getInstance().getLlistaPreferits().toString());
+                        //PreferitsListManager.getInstance().afegirPreferit(personaje);
+                        Log.d("Log.d", "Objectes llista_original despres: " + PreferitsListManager.getInstance().getLlistaPreferits().toString());
+                    } else {
                         item.setPreferit(false);
                         holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
                     }

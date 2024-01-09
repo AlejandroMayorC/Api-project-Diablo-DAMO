@@ -116,8 +116,6 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     Object preferit = adapter.listPreferits.get(position);
-                    //Log.d("Log.d", "Objectes llista" + adapter.listPreferits.toString());
-                    //Log.d("Log.d", "Objectes llista_original" + PreferitsListManager.getInstance().getLlistaPreferits().toString());
                     if (preferit instanceof Personaje) {
                         Personaje personaje = (Personaje) preferit;
                         Intent intent = new Intent(v.getContext(), DetallePersonajeActivity.class);
