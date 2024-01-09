@@ -14,23 +14,13 @@
             android:layout_height="wrap_content"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/spinnerOptionsGems"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <Spinner
-            android:id="@+id/spinnerOptionsGems"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/searchViewGems"
-            app:layout_constraintBottom_toBottomOf="@id/searchViewGems"
-            app:layout_constraintLeft_toRightOf="@id/searchViewGems"
-            app:layout_constraintRight_toRightOf="parent"/>
 
         <TextView
             android:id="@+id/tvAPI2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Gems"
+            android:text="GEMS"
             android:gravity="center"
             android:textSize="24sp"
             android:layout_marginTop="8dp"

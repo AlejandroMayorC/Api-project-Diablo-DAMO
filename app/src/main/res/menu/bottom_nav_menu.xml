@@ -1,18 +1,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_api1"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/classe"
         android:title="Classes" />
     <item
         android:id="@+id/navigation_api2"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/bolsa"
         android:title="Items" />
     <item
         android:id="@+id/navigation_api3"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="API 3" />
+        android:icon="@drawable/diamond"
+        android:title="Gems" />
     <item
         android:id="@+id/navigation_favoritos"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/btn_star_big_on"
         android:title="Preferits" />
 </menu>
