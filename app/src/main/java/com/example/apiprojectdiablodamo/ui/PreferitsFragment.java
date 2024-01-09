@@ -37,7 +37,7 @@ public class PreferitsFragment extends Fragment {
         listPreferits = new ArrayList<>(listPreferitsOriginal); // Crear una copia para mostrar
         recyclerView = view.findViewById(R.id.recyclerViewPreferits);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new PreferitsAdapter(listPreferits);
+        PreferitsAdapter adapter = new PreferitsAdapter(listPreferits);
         recyclerView.setAdapter(adapter);
         SearchView searchViewPreferits = view.findViewById(R.id.searchViewFav);
         searchViewPreferits.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -54,7 +54,6 @@ public class PreferitsFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
@@ -70,5 +69,4 @@ public class PreferitsFragment extends Fragment {
         }
         adapter.actualizarListaPreferits(listaFiltradaTemp); // Actualiza la lista del adaptador
     }
-
 }

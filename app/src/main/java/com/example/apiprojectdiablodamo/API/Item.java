@@ -24,6 +24,8 @@ public class Item implements Serializable {
     private List<RandomAffix> randomAffixes;
     private List<?> setItems;
     private boolean esPreferit;
+    private String className;
+
 
     public Item(String id, String slug, String name, String icon, String tooltipParams, int requiredLevel, boolean accountBound, String flavorText, String typeName, ItemType type, String damage, String dps, String color, boolean isSeasonRequiredToDrop, int seasonRequiredToDrop, List<String> slots, Attributes attributes, List<RandomAffix> randomAffixes, List<?> setItems) {
         this.id = id;
@@ -209,6 +211,10 @@ public class Item implements Serializable {
 
     public void setPreferit(boolean esPreferit) {
         this.esPreferit = esPreferit;
+    }
+
+    public String getClassName() {
+        return className = "Item";
     }
 
     public static class ItemType implements Serializable {

@@ -22,6 +22,11 @@ public class Personaje implements Serializable{
     private List<SkillCategory> skillCategories;
     private Skills skills;
     private boolean esPreferit;
+    private String className;
+
+    public Personaje() {
+        // Constructor buit necessari per a la desserialització de Firebase
+    }
 
     public Personaje(String slug, String name, String maleName, String femaleName, String icon, List<SkillCategory> skillCategories, Skills skills) {
         this.slug = slug;
@@ -31,6 +36,7 @@ public class Personaje implements Serializable{
         this.icon = icon;
         this.skillCategories = skillCategories;
         this.skills = skills;
+        this.className = "Personatge";
     }
 
     public String getSlug() {
@@ -95,5 +101,9 @@ public class Personaje implements Serializable{
 
     public void setPreferit(boolean esPreferit) {
         this.esPreferit = esPreferit;
+    }
+
+    public String getClassName() {
+        return className = "Personaje";
     }
 }

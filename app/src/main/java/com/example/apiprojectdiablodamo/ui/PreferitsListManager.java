@@ -32,7 +32,7 @@ public class PreferitsListManager {
         }
     }
 
-    public void buidarLlistaPreferits(List<Object> llistaPreferits) {
+    public void buidarLlistaPreferits() {
         llistaPreferits.clear();
     }
 

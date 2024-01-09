@@ -288,7 +288,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     private void putClassDB(Item item, ItemAdapter.ItemViewHolder holder) {
         Map<String, Object> map = new HashMap<>();
         String name = item.getName();
+        String tipusObjecte = item.getClassName();
         map.put("name", name);
+        map.put("slug", item.getSlug());
+        map.put("tipusClasse", tipusObjecte);
 
         mFirestore.collection("Preferits").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
@@ -358,7 +361,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     }*/
 
     private void comprovacioEsPreferitDB(Item item, ItemAdapter.ItemViewHolder holder) {
-        PreferitsListManager.getInstance().buidarObjecteLlistaPreferits(Personaje.class);
+        //PreferitsListManager.getInstance().buidarObjecteLlistaPreferits(Personaje.class);
         mFirestore.collection("Item")
                 .whereEqualTo("name", item.getName())
                 .get()

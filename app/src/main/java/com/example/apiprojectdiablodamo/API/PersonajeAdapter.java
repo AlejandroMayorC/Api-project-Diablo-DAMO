@@ -153,7 +153,10 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
     private void putClassDB(Personaje personaje, PersonajeViewHolder holder) {
         Map<String, Object> map = new HashMap<>();
         String name = personaje.getName();
+        String tipusObjecte = personaje.getClassName();
         map.put("name", name);
+        map.put("slug", personaje.getSlug());
+        map.put("tipusClasse", tipusObjecte);
 
         // Habilitats actives
         List<Map<String, Object>> habilitatsActives = new ArrayList<>();
@@ -220,7 +223,7 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
     }
 
     private void comprovacioEsPreferitDB(Personaje personaje, PersonajeViewHolder holder) {
-        PreferitsListManager.getInstance().buidarObjecteLlistaPreferits(Personaje.class);
+        //PreferitsListManager.getInstance().buidarObjecteLlistaPreferits(Personaje.class);
         mFirestore.collection("Preferits")
                 .whereEqualTo("name", personaje.getName())
                 .get()

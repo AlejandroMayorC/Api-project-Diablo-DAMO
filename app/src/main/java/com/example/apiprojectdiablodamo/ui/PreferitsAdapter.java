@@ -18,8 +18,10 @@ import com.example.apiprojectdiablodamo.API.Item;
 import com.example.apiprojectdiablodamo.API.ItemAdapter;
 import com.example.apiprojectdiablodamo.API.Personaje;
 import com.example.apiprojectdiablodamo.API.PersonajeAdapter;
+import com.example.apiprojectdiablodamo.API.PersonajeManager;
 import com.example.apiprojectdiablodamo.R;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -132,6 +134,7 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         mFirestore = FirebaseFirestore.getInstance();
+        afegirObjectesALlistaPreferits();
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.preferit_info_card, parent, false);
         return new ViewHolder(view, this);
         /*switch (viewType) {
@@ -160,24 +163,30 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             Log.d("ItemAdapter", "Nom de l'ítem: " + name);
             viewHolder.textViewNom.setText(((Personaje) object).getName());
 
-            String imageUrl = obtenerUrlImagen(((Personaje) object).getSlug(), holder.getItemViewType());
-            if (!imageUrl.isEmpty()) {
-                Glide.with(viewHolder.imageViewIcono.getContext())
-                        .load(imageUrl)
-                        .override(200, 200)
-                        .centerCrop()
-                        .into(viewHolder.imageViewIcono);
+            String slug = ((Personaje) object).getSlug();
+            if (slug != null) {
+                String imageUrl = obtenerUrlImagen(slug, TYPE_PERSONATGE);
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    Glide.with(viewHolder.imageViewIcono.getContext())
+                            .load(imageUrl)
+                            .override(200, 200)
+                            .centerCrop()
+                            .into(viewHolder.imageViewIcono);
+                }
             }
         } else if (object instanceof Item) {
             // Item-specific configurations here
             viewHolder.textViewNom.setText(((Item) object).getName());
-            String imageUrl = obtenerUrlImagen(((Item) object).getSlug(), holder.getItemViewType());
-            if (!imageUrl.isEmpty()) {
-                Glide.with(viewHolder.imageViewIcono.getContext())
-                        .load(imageUrl)
-                        .override(200, 200)
-                        .centerCrop()
-                        .into(viewHolder.imageViewIcono);
+            String slug = ((Item) object).getSlug();
+            if (slug != null) {
+                String imageUrl = obtenerUrlImagen(slug, TYPE_ITEM);
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    Glide.with(viewHolder.imageViewIcono.getContext())
+                            .load(imageUrl)
+                            .override(200, 200)
+                            .centerCrop()
+                            .into(viewHolder.imageViewIcono);
+                }
             }
         }
         // Glide configuration
@@ -256,20 +265,74 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
-    private void comprovacioEsPreferitDB(Object object, ViewHolder holder) {
+    /*private void comprovacioEsPreferitDB(Object object, ViewHolder holder) {
+        Log.d("Preferits", "Contenido de listPreferits antes de vaciar: " + listPreferits.toString());
         PreferitsListManager.getInstance().buidarLlistaPreferits(listPreferits);
-        mFirestore.collection("Item")
+        mFirestore.collection("Preferits")
                 .whereEqualTo("name", object.getClass().getName())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                        object.getClass().setPreferit(true);
-                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
-                        PreferitsListManager.getInstance().afegirPreferit(item);
+                        if (object instanceof Item) {
+                            Item item = (Item) object;
+                            item.setPreferit(true);
+                            holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
+                            PreferitsListManager.getInstance().afegirPreferit(item);
+                        } else if (object instanceof Personaje) {
+                            Personaje personaje = (Personaje) object;
+                            personaje.setPreferit(true);
+                            holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
+                            PreferitsListManager.getInstance().afegirPreferit(personaje);
+                        }
                     } else {
-                        item.setPreferit(false);
-                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
+                        // Si no se encuentra en la base de datos, se marca como no preferido
+                        if (object instanceof Item) {
+                            Item item = (Item) object;
+                            item.setPreferit(false);
+                            holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
+                        }
                     }
+                })
+                .addOnFailureListener(e -> {
+                    // Maneig de l'error en cas que la consulta no funcioni.
+                });
+    }*/
+
+    private void afegirObjectesALlistaPreferits() {
+        PreferitsListManager.getInstance().buidarLlistaPreferits();
+        Log.d("Personajes", "Personajes disponibles: " + PersonajeManager.getInstance().getPersonajes());
+        mFirestore.collection("Preferits")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String objectClassName = (String) document.get("tipusClasse");
+                            //Object object = document.toObject(Object.class);
+                            //String nomTipus = String.valueOf(object.getClass());
+                            Log.d("Preferits", "Nom objecte DB: " + objectClassName);
+                            //Log.d("Preferits", "Objecte afegit a la llista de preferits: " + object.toString());
+
+                            if ("Item".equals(objectClassName)) {
+                                Object object = document.toObject(Item.class);
+                                Item item = (Item) object;
+                                item.setPreferit(true);
+                                PreferitsListManager.getInstance().afegirPreferit(item);
+                            } else if ("Personaje".equals(objectClassName)) {
+                                Object object = document.toObject(Personaje.class);
+                                Personaje personaje = (Personaje) object;
+                                personaje.setPreferit(true);
+                                PreferitsListManager.getInstance().afegirPreferit(personaje);
+                            }
+                            // Aquí pots crear els objectes basats en el nom de la classe
+                            // i afegir-los a la llista de preferits
+                            // Exemple hipotètic:
+                            /*Object object = createObjectBasedOnClassName(objectClassName);
+                            if (object != null) {
+                                PreferitsListManager.getInstance().afegirPreferit(object);
+                            }*/
+                        }
+                    }
+                    Log.d("Log.d", "Objectes llista" + listPreferits.toString());
                 })
                 .addOnFailureListener(e -> {
                     // Maneig de l'error en cas que la consulta no funcioni.
