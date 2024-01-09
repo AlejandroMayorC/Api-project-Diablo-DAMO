@@ -11,9 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.apiprojectdiablodamo.R;
+import com.example.apiprojectdiablodamo.ui.DetalleItemFragment;
 import com.example.apiprojectdiablodamo.ui.PreferitsListManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -81,10 +84,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             }
 
             holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(v.getContext(), DetalleItemActivity.class);
-                String itemJson = new Gson().toJson(item);
-                intent.putExtra("itemJson", itemJson);
-                v.getContext().startActivity(intent);
+                if (context instanceof FragmentActivity) {
+                    FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                    DetalleItemFragment detalleItemFragment = DetalleItemFragment.newInstance(item, obtenerUrlImagen(item.getSlug()));
+
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, detalleItemFragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
             });
 
             // Configuració visual basada en l'estat de preferit de l'item
