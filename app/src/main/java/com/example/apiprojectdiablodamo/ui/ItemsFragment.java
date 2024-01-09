@@ -71,7 +71,7 @@ public class ItemsFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Opcionalmente, manejar el caso en que no se selecciona nada
+
             }
         });
         // Configurado el SearchView
@@ -93,7 +93,7 @@ public class ItemsFragment extends Fragment {
                 return false;
             }
         });
-        //cargarItems();
+        //cargarItems(); lo llamamos en onResume()
         return view;
     }
 
