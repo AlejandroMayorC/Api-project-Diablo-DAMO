@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.apiprojectdiablodamo.API.DetalleItemActivity;
 import com.example.apiprojectdiablodamo.API.DetallePersonajeActivity;
 import com.example.apiprojectdiablodamo.API.Item;
 import com.example.apiprojectdiablodamo.API.ItemAdapter;
@@ -45,62 +46,6 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         //actualizarNombresUnicos();
     }
 
-    /*public static class PersonajeViewHolder extends RecyclerView.ViewHolder {
-        public TextView textViewNombre;
-        public ImageView imageViewIcono;
-        public ImageButton Btn_preferits_character;
-
-        public PersonajeViewHolder(View itemView, PreferitsAdapter adapter) {
-            super(itemView);
-            textViewNombre = itemView.findViewById(R.id.textViewNombre);
-            imageViewIcono = itemView.findViewById(R.id.imageViewIcono);
-            Btn_preferits_character = itemView.findViewById(R.id.Btn_preferits_character);
-
-            Btn_preferits_character.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    Object preferit = adapter.listPreferits.get(position);
-                    if (preferit instanceof Personaje) {
-                        Personaje personaje = (Personaje) preferit;
-                        Intent intent = new Intent(v.getContext(), DetallePersonajeActivity.class);
-                        intent.putExtra("personajeJson", new Gson().toJson(personaje));
-                        String imageUrl = PreferitsAdapter.obtenerUrlImagen(personaje.getSlug(), TYPE_PERSONATGE);
-                        intent.putExtra("imagenUrl", imageUrl);
-                        v.getContext().startActivity(intent);
-                    }
-                }
-            });
-        }
-    }
-
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
-        public TextView textViewNombre;
-        public ImageView imageViewIcono;
-        public ImageButton Btn_preferits_character;
-
-        public ItemViewHolder(View itemView, PreferitsAdapter adapter) {
-            super(itemView);
-            textViewNombre = itemView.findViewById(R.id.textViewNombre);
-            imageViewIcono = itemView.findViewById(R.id.imageViewIcono);
-            Btn_preferits_character = itemView.findViewById(R.id.Btn_preferits_character);
-
-            Btn_preferits_character.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    Object preferit = adapter.listPreferits.get(position);
-                    if (preferit instanceof Item) {
-                        Item item = (Item) preferit;
-                        Intent intent = new Intent(v.getContext(), DetallePersonajeActivity.class);
-                        intent.putExtra("personajeJson", new Gson().toJson(item));
-                        String imageUrl = PreferitsAdapter.obtenerUrlImagen(item.getSlug(), TYPE_ITEM);
-                        intent.putExtra("imagenUrl", imageUrl);
-                        v.getContext().startActivity(intent);
-                    }
-                }
-            });
-        }
-    }*/
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewNom;
         public ImageView imageViewIcono;
@@ -125,7 +70,8 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         v.getContext().startActivity(intent);
                     } else if (preferit instanceof Item) {
                         Item item = (Item) preferit;
-                        Intent intent = new Intent(v.getContext(), DetallePersonajeActivity.class);
+                        Intent intent = new Intent(v.getContext(), DetalleItemActivity.class);
+                        intent.putExtra("nameItem", item.getName());
                         intent.putExtra("itemJson", new Gson().toJson(item));
                         String imageUrl = PreferitsAdapter.obtenerUrlImagen(item.getSlug(), TYPE_ITEM);
                         intent.putExtra("imagenUrl", imageUrl);
@@ -145,16 +91,6 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         Log.d("Personajes", "Personajes disponibles despres: " + PreferitsListManager.getInstance().getLlistaPreferits());
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.preferit_info_card, parent, false);
         return new ViewHolder(view, this);
-        /*switch (viewType) {
-            case TYPE_PERSONATGE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.personaje_preferit_item, parent, false);
-                return new PersonajeViewHolder(view, this);
-            case TYPE_ITEM:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.preferit_info_card, parent, false);
-                return new ItemViewHolder(view, this);
-            default:
-                return null;
-        }*/
 
     }
 
@@ -202,43 +138,6 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
     }
-        /*switch (holder.getItemViewType()) {
-            case TYPE_PERSONATGE:
-                if (object instanceof Personaje) {
-                    Personaje personaje = (Personaje) object;
-                    if (personaje != null) {
-                        PersonajeViewHolder personajeViewHolder = (PersonajeViewHolder) holder;
-                        personajeViewHolder.textViewNombre.setText(personaje.getName());
-                        String imageUrl = obtenerUrlImagen(personaje.getSlug(), holder.getItemViewType());
-                        if (!imageUrl.isEmpty()) {
-                            Glide.with(personajeViewHolder.imageViewIcono.getContext())
-                                    .load(imageUrl)
-                                    .override(200, 200)
-                                    .centerCrop()
-                                    .into(personajeViewHolder.imageViewIcono);
-                        }
-                    }
-                }
-                break;
-            case TYPE_ITEM:
-                if (object instanceof Item) {
-                    Item item = (Item) object;
-                    if (item != null) {
-                        ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-                        itemViewHolder.textViewNombre.setText(item.getName());
-                        String imageUrl = obtenerUrlImagen(item.getSlug(), holder.getItemViewType());
-
-                        if (imageUrl != null && !imageUrl.isEmpty()) {
-                            Glide.with(itemViewHolder.imageViewIcono.getContext())
-                                    .load(imageUrl)
-                                    .override(200, 200)
-                                    .centerCrop()
-                                    .into(itemViewHolder.imageViewIcono);
-                        }
-                    }
-                    break;
-                }
-        }*/
 
     @Override
     public int getItemCount() {
@@ -284,39 +183,6 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
         }
     }
-
-    /*private void comprovacioEsPreferitDB(Object object, ViewHolder holder) {
-        Log.d("Preferits", "Contenido de listPreferits antes de vaciar: " + listPreferits.toString());
-        PreferitsListManager.getInstance().buidarLlistaPreferits(listPreferits);
-        mFirestore.collection("Preferits")
-                .whereEqualTo("name", object.getClass().getName())
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                        if (object instanceof Item) {
-                            Item item = (Item) object;
-                            item.setPreferit(true);
-                            holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
-                            PreferitsListManager.getInstance().afegirPreferit(item);
-                        } else if (object instanceof Personaje) {
-                            Personaje personaje = (Personaje) object;
-                            personaje.setPreferit(true);
-                            holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
-                            PreferitsListManager.getInstance().afegirPreferit(personaje);
-                        }
-                    } else {
-                        // Si no se encuentra en la base de datos, se marca como no preferido
-                        if (object instanceof Item) {
-                            Item item = (Item) object;
-                            item.setPreferit(false);
-                            holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
-                        }
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    // Maneig de l'error en cas que la consulta no funcioni.
-                });
-    }*/
 
     private void afegirObjectesALlistaPreferits() {
         Log.d("Preferits", "Personajes disponibles abans: " + PreferitsListManager.getInstance().getLlistaPreferits());
@@ -366,20 +232,6 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                     PreferitsListManager.getInstance().afegirPreferit(object);
                                 }
                             }
-                            /*String nombre = obtenerNombreUnico(object);
-                            Log.d("actual", "Nom actual: " + nombre);
-                            if (!nombresUnicos.contains(nombre)) {
-                                nombresUnicos.add(nombre);
-                                listPreferits.add(object);
-                                PreferitsListManager.getInstance().afegirPreferit(object);
-                            }*/
-                            // Aquí pots crear els objectes basats en el nom de la classe
-                            // i afegir-los a la llista de preferits
-                            // Exemple hipotètic:
-                            /*Object object = createObjectBasedOnClassName(objectClassName);
-                            if (object != null) {
-                                PreferitsListManager.getInstance().afegirPreferit(object);
-                            }*/
                         }
                     }
                 })
@@ -401,11 +253,4 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return null;
     }
 
-
-    /*public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
-    }*/
 }

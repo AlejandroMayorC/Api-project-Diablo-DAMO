@@ -45,7 +45,6 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
     }
 
     public static class PersonajeViewHolder extends RecyclerView.ViewHolder {
-        // Aquí defines los elementos de la vista, como TextViews, ImageViews, etc.
         public TextView textViewNombre;
         public ImageView imageViewIcono;
         public ImageButton Btn_preferits_character;

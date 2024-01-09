@@ -11,7 +11,7 @@ import com.example.apiprojectdiablodamo.R;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
-    private String[] data; // Aquí se podría almacenar los datos
+    private String[] data;
 
     public MyAdapter(String[] data) {
         this.data = data;

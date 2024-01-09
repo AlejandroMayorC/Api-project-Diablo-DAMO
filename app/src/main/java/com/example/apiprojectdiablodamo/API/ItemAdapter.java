@@ -317,6 +317,14 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         map.put("name", name);
         map.put("slug", item.getSlug());
         map.put("tipusClasse", tipusObjecte);
+        map.put("Nivell mínim", item.getRequiredLevel());
+        map.put("Type name", item.getTypeName());
+        map.put("Damage", item.getDamage());
+        map.put("DPS", item.getDps());
+        map.put("Color", item.getColor());
+        map.put("Season", item.getIsSeasonRequiredToDrop());
+        map.put("isTwoHanded", item.getType().isTwoHanded());
+        map.put("ID", item.getType().getId());
 
         mFirestore.collection("Preferits").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
@@ -364,58 +372,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                     Toast.makeText(context, "Error en la consulta", Toast.LENGTH_SHORT).show();
                 });
     }
-
-    /*private void comprovacioEsPreferitDB(Item item, ItemAdapter.ItemViewHolder holder) {
-        PreferitsListManager.getInstance().buidarObjecteLlistaPreferits(Personaje.class);
-        mFirestore.collection("Item")
-                .whereEqualTo("name", item.getName())
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                        item.setPreferit(true);
-                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
-                        PreferitsListManager.getInstance().afegirPreferit(item);
-                    } else {
-                        item.setPreferit(false);
-                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    // Maneig de l'error en cas que la consulta no funcioni.
-                });
-    }*/
-
-    /*private void comprovacioEsPreferitDB(Item item, ItemAdapter.ItemViewHolder holder) {
-        //PreferitsListManager.getInstance().buidarObjecteLlistaPreferits(Personaje.class);
-        mFirestore.collection("Item")
-                .whereEqualTo("name", item.getName())
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            // Verificar si l'element està a la base de dades com a preferit
-                            Item itemFromDB = document.toObject(Item.class);
-                            if (itemFromDB != null && itemFromDB.getPreferit()) {
-                                // Si és preferit, actualitza el drawable de l'ImageButton
-                                item.setPreferit(true);
-                                holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
-                                //PreferitsListManager.getInstance().afegirPreferit(item);
-                            } else {
-                                // Si no és preferit, actualitza el drawable de l'ImageButton
-                                item.setPreferit(false);
-                                holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
-                            }
-                        }
-                    } else {
-                        // Si no es troba cap document amb aquest nom
-                        item.setPreferit(false);
-                        holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    // Maneig de l'error en cas que la consulta no funcioni.
-                });
-    }*/
 
     private void comprovacioEsPreferitDB(Item item, ItemAdapter.ItemViewHolder holder) {
         //PreferitsListManager.getInstance().buidarObjecteLlistaPreferits(Personaje.class);

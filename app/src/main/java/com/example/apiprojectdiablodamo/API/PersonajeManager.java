@@ -18,7 +18,5 @@ public class PersonajeManager {
     public void setPersonajes(List<Personaje> personajes) {
         this.personajes = personajes;
     }
-
-    // Métodos para actualizar el estado de favorito, etc.
 }
 

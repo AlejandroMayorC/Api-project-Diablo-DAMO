@@ -201,5 +201,4 @@ public class CharacterFragment extends Fragment {
         // Restablecer la lista a su estado original
         adapter.actualizarListaPersonajes(listaPersonajesOriginal);
     }
-
 }
