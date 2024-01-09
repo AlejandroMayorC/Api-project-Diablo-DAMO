@@ -123,11 +123,11 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
                 personaje.setPreferit(!personaje.getPreferit());
 
                 if (personaje.getPreferit()) {
-                    PreferitsListManager.getInstance().afegirPreferit(personaje);
+                    //PreferitsListManager.getInstance().afegirPreferit(personaje);
                     putClassDB(personaje, holder);
                     holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
                 } else {
-                    PreferitsListManager.getInstance().eliminarPreferit(personaje);
+                    //PreferitsListManager.getInstance().eliminarPreferit(personaje);
                     deleteClassDB(personaje, holder);
                     holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
                 }
@@ -231,7 +231,9 @@ public class PersonajeAdapter extends RecyclerView.Adapter<PersonajeAdapter.Pers
                     if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
                         personaje.setPreferit(true);
                         holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
-                        PreferitsListManager.getInstance().afegirPreferit(personaje);
+                        Log.d("Log.d", "Objectes llista_original abans: " + PreferitsListManager.getInstance().getLlistaPreferits().toString());
+                        //PreferitsListManager.getInstance().afegirPreferit(personaje);
+                        Log.d("Log.d", "Objectes llista_original despres: " + PreferitsListManager.getInstance().getLlistaPreferits().toString());
                     } else {
                         personaje.setPreferit(false);
                         holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);

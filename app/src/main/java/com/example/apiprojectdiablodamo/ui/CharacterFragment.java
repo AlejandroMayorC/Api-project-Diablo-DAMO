@@ -191,7 +191,7 @@ public class CharacterFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        executorService.shutdownNow(); // Asegurarse de apagar el servicio al detener el fragmento
+        //executorService.shutdownNow(); // Asegurarse de apagar el servicio al detener el fragmento
         for (Call call : activeCalls) {
             call.cancel();
         }

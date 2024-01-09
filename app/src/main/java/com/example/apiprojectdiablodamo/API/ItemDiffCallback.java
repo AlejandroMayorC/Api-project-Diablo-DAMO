@@ -26,13 +26,13 @@ public class ItemDiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        // Compara los nombres de tus ítems aquí
+        // Compara los nombres de ítems
         return oldList.get(oldItemPosition).getName().equals(newList.get(newItemPosition).getName());
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        // Compara si los contenidos (nombres) de tus ítems son los mismos
+        // Compara si los contenidos (nombres) de  ítems son los mismos
         return oldList.get(oldItemPosition).getName().equals(newList.get(newItemPosition).getName());
     }
 }

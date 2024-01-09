@@ -104,13 +104,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
             holder.Btn_preferits_character.setOnClickListener(v -> {
                 item.setPreferit(!item.getPreferit());
-
                 if (item.getPreferit()) {
-                    PreferitsListManager.getInstance().afegirPreferit(item);
+                    //PreferitsListManager.getInstance().afegirPreferit(item);
                     putClassDB(item, holder);
                     holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
                 } else {
-                    PreferitsListManager.getInstance().eliminarPreferit(item);
+                    //PreferitsListManager.getInstance().eliminarPreferit(item);
                     deleteClassDB(item, holder);
                     holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_off);
                 }
@@ -402,7 +401,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                                 // Si és preferit, actualitza el drawable de l'ImageButton
                                 item.setPreferit(true);
                                 holder.Btn_preferits_character.setImageResource(R.drawable.btn_star_big_on);
-                                PreferitsListManager.getInstance().afegirPreferit(item);
+                                //PreferitsListManager.getInstance().afegirPreferit(item);
                             } else {
                                 // Si no és preferit, actualitza el drawable de l'ImageButton
                                 item.setPreferit(false);

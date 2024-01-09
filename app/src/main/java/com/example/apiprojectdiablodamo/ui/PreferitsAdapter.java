@@ -25,7 +25,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -33,9 +35,14 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private FirebaseFirestore mFirestore;
     private static final int TYPE_PERSONATGE = 1;
     private static final int TYPE_ITEM = 2;
+    private Set<String> nombresUnicos = new HashSet<>();
 
     public PreferitsAdapter(List<Object> listPreferits) {
         this.listPreferits = new ArrayList<>(listPreferits);
+        mFirestore = FirebaseFirestore.getInstance();
+        afegirObjectesALlistaPreferits();
+        actualizarListaPreferits(listPreferits);
+        //actualizarNombresUnicos();
     }
 
     /*public static class PersonajeViewHolder extends RecyclerView.ViewHolder {
@@ -109,6 +116,8 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     Object preferit = adapter.listPreferits.get(position);
+                    //Log.d("Log.d", "Objectes llista" + adapter.listPreferits.toString());
+                    //Log.d("Log.d", "Objectes llista_original" + PreferitsListManager.getInstance().getLlistaPreferits().toString());
                     if (preferit instanceof Personaje) {
                         Personaje personaje = (Personaje) preferit;
                         Intent intent = new Intent(v.getContext(), DetallePersonajeActivity.class);
@@ -133,8 +142,9 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        mFirestore = FirebaseFirestore.getInstance();
-        afegirObjectesALlistaPreferits();
+        Log.d("Personajes", "listpreferits: " + listPreferits);
+        //afegirObjectesALlistaPreferits();
+        Log.d("Personajes", "Personajes disponibles despres: " + PreferitsListManager.getInstance().getLlistaPreferits());
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.preferit_info_card, parent, false);
         return new ViewHolder(view, this);
         /*switch (viewType) {
@@ -150,12 +160,13 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Object object = listPreferits.get(position);
+        Log.d("list", "Llista onbindviewholder: " + listPreferits);
+        //Object object = PreferitsListManager.getInstance().getLlistaPreferits().get(position);
         ViewHolder viewHolder = (ViewHolder) holder;
-
+        Log.d("Noms", "Nom preferits: " + nombresUnicos);
         // Additional configurations based on the object type
         if (object instanceof Personaje) {
             // Personaje-specific configurations here
@@ -231,7 +242,6 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
         }*/
 
-
     @Override
     public int getItemCount() {
         return listPreferits.size();
@@ -262,7 +272,19 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void actualizarListaPreferits(List<Object> nuevaLista) {
         listPreferits.clear();
         listPreferits.addAll(nuevaLista);
+        actualizarNombresUnicos();
         notifyDataSetChanged();
+    }
+
+    private void actualizarNombresUnicos() {
+        nombresUnicos.clear(); // Limpiar el conjunto antes de actualizarlo
+        for (Object object : listPreferits) {
+            if (object instanceof Personaje) {
+                nombresUnicos.add(((Personaje) object).getName());
+            } else if (object instanceof Item) {
+                nombresUnicos.add(((Item) object).getName());
+            }
+        }
     }
 
     /*private void comprovacioEsPreferitDB(Object object, ViewHolder holder) {
@@ -299,30 +321,60 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }*/
 
     private void afegirObjectesALlistaPreferits() {
-        PreferitsListManager.getInstance().buidarLlistaPreferits();
-        Log.d("Personajes", "Personajes disponibles: " + PersonajeManager.getInstance().getPersonajes());
+        Log.d("Preferits", "Personajes disponibles abans: " + PreferitsListManager.getInstance().getLlistaPreferits());
+        //PreferitsListManager.getInstance().buidarLlistaPreferits();
+        listPreferits.clear();
         mFirestore.collection("Preferits")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String objectClassName = (String) document.get("tipusClasse");
+                            Object object = null;
                             //Object object = document.toObject(Object.class);
                             //String nomTipus = String.valueOf(object.getClass());
                             Log.d("Preferits", "Nom objecte DB: " + objectClassName);
                             //Log.d("Preferits", "Objecte afegit a la llista de preferits: " + object.toString());
-
                             if ("Item".equals(objectClassName)) {
-                                Object object = document.toObject(Item.class);
+                                object = document.toObject(Item.class);
                                 Item item = (Item) object;
                                 item.setPreferit(true);
-                                PreferitsListManager.getInstance().afegirPreferit(item);
+                                //PreferitsListManager.getInstance().afegirPreferit(item);
+                                String nombre = obtenerNombreUnico(object);
+                                Log.d("Preferits", "Nom actual: " + nombre);
+                                if (!nombresUnicos.contains(nombre)) {
+                                    Log.d("Preferits", "Nombres unics abans: " + nombresUnicos);
+                                    nombresUnicos.add(nombre);
+                                    Log.d("Preferits", "Nombres unics despres: " + nombresUnicos);
+                                    Log.d("Preferits", "Objectes llista preferits abans" + listPreferits.toString());
+                                    listPreferits.add(object);
+                                    Log.d("Preferits", "Objectes llista preferits despres" + listPreferits.toString());
+                                    PreferitsListManager.getInstance().afegirPreferit(object);
+                                }
                             } else if ("Personaje".equals(objectClassName)) {
-                                Object object = document.toObject(Personaje.class);
+                                object = document.toObject(Personaje.class);
                                 Personaje personaje = (Personaje) object;
                                 personaje.setPreferit(true);
-                                PreferitsListManager.getInstance().afegirPreferit(personaje);
+                                //PreferitsListManager.getInstance().afegirPreferit(personaje);
+                                String nombre = obtenerNombreUnico(object);
+                                Log.d("actual", "Nom actual: " + nombre);
+                                if (!nombresUnicos.contains(nombre)) {
+                                    Log.d("Preferits", "Nombres unics abans: " + nombresUnicos);
+                                    nombresUnicos.add(nombre);
+                                    Log.d("Preferits", "Nombres unics despres: " + nombresUnicos);
+                                    Log.d("Preferits", "Objectes llista preferits abans" + listPreferits.toString());
+                                    listPreferits.add(object);
+                                    Log.d("Preferits", "Objectes llista preferits despres" + listPreferits.toString());
+                                    PreferitsListManager.getInstance().afegirPreferit(object);
+                                }
                             }
+                            /*String nombre = obtenerNombreUnico(object);
+                            Log.d("actual", "Nom actual: " + nombre);
+                            if (!nombresUnicos.contains(nombre)) {
+                                nombresUnicos.add(nombre);
+                                listPreferits.add(object);
+                                PreferitsListManager.getInstance().afegirPreferit(object);
+                            }*/
                             // Aquí pots crear els objectes basats en el nom de la classe
                             // i afegir-los a la llista de preferits
                             // Exemple hipotètic:
@@ -332,11 +384,23 @@ public class PreferitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             }*/
                         }
                     }
-                    Log.d("Log.d", "Objectes llista" + listPreferits.toString());
                 })
                 .addOnFailureListener(e -> {
                     // Maneig de l'error en cas que la consulta no funcioni.
                 });
+        actualizarListaPreferits(listPreferits);
+        notifyDataSetChanged();
+        //Log.d("Preferits", "Objectes llista preferits" + listPreferits.toString());
+        //Log.d("Preferits", "Objectes llista_original" + PreferitsListManager.getInstance().getLlistaPreferits().toString());
+    }
+
+    private String obtenerNombreUnico(Object object) {
+        if (object instanceof Personaje) {
+            return ((Personaje) object).getName();
+        } else if (object instanceof Item) {
+            return ((Item) object).getName();
+        }
+        return null;
     }
 
 
